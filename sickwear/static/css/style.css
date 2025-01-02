@@ -1,0 +1,92 @@
+textarea.form-control {
+    height: auto !important; /* Allow the height to be controlled by the rows attribute */
+    min-height: calc(1.5em * 3); /* Minimum height to match 3 rows */
+}
+
+.image-container {
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-body {
+    flex: 1; /* Ensures the card-body takes up remaining space */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.card-text {
+    height: 60px; /* Fixed height for descriptions */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+/* General styling for the carousel controls */
+.carousel-control-prev,
+.carousel-control-next {
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    position: absolute;
+    top: 50%; /* Align vertically */
+    transform: translateY(-50%); /* Adjust for perfect vertical alignment */
+}
+
+/* Show buttons only on carousel hover */
+#categoryCarousel:hover .carousel-control-prev,
+#categoryCarousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+/* Adjust button position to the sides */
+.carousel-control-prev {
+    left: -30px; /* Adjust based on your layout */
+}
+
+.carousel-control-next {
+    right: -30px; /* Adjust based on your layout */
+}
+
+/* Ensure the buttons are properly aligned */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    width: 20px;
+    height: 20px;
+    background-size: contain;
+}
