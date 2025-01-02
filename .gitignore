@@ -1,0 +1,6 @@
+# exclude the virtual env
+myenv/
+.git/
+
+# exclude the .pyc files
+*.pyc
