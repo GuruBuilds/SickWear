@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'sickwear.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sickwaredb',      # Replace with your database name
+        'NAME': 'sickweardb',      # Replace with your database name
         'USER': 'kpt',          # Replace with your username
         'PASSWORD': 'admin',  # Replace with your password
         'HOST': 'localhost',       # Set to 'localhost' for local PostgreSQL
