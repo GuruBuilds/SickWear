@@ -6,15 +6,17 @@
     <div class="row">
         {% for product in products %}
             <div class="col-md-4">
-                <div class="card mb-4">
-                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" style="height: 250px; object-fit: cover;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text product-price">{{ product.price }}</p>
-                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
-                        <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                <a href="{% url 'product_details' product.id %}" style="text-decoration: none; color: inherit;">
+                    <div class="card mb-4">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" style="height: 250px; object-fit: contain;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text product-price">{{ product.price }}</p>
+                            <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                            <a href="{% url 'product_details' product.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         {% empty %}
             <div class="col-12">
