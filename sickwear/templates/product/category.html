@@ -1,15 +1,26 @@
 {% extends "../base.html" %}
 {% block title %}Categories{% endblock %}
 {% block content %}
-<h1>
-    {{ category.name }}
-</h1>
-<ul>
-    {% for product in products %}
-    <li>{{ product.name }}</li>
-    <li>{{ product.description }}</li>
-    <li>{{ product.price }}</li>
-    <li>{{ product.stock }}</li>
-    {% endfor %}
-</ul>
+<div class="container mt-5">
+    <h1 class="text-center">{{ category.name }}</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="card-img-top" style="height: 250px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text product-price">{{ product.price }}</p>
+                        <p class="card-text">{{ product.description|truncatewords:20 }}</p>
+                        <button class="btn btn-primary add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p class="text-center">No products available in this category.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
 {% endblock %}

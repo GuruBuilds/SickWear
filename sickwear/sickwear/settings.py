@@ -81,7 +81,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'sickweardb',      # Replace with your database name
-        'USER': 'kpt',          # Replace with your username
+        'USER': 'gusi',          # Replace with your username
         'PASSWORD': 'admin',  # Replace with your password
         'HOST': 'localhost',       # Set to 'localhost' for local PostgreSQL
         'PORT': '5432',            # Default PostgreSQL port
@@ -142,5 +142,5 @@ MESSAGE_TAGS = {
 
 
 # Media files
-MEDIA_URL = 'images/'
-MEDIA_ROOT = os.path.join(BASE_DIR, STATIC_URL, 'images')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

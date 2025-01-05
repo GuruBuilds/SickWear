@@ -4,3 +4,7 @@ myenv/
 
 # exclude the .pyc files
 *.pyc
+
+
+# exclude the media files
+/media/
