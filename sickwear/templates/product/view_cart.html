@@ -1,0 +1,63 @@
+{% extends "../base.html" %}
+{% block title %}cart{% endblock %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Your Cart</h1>
+    <table class="table table-bordered">
+        <thead class="table-dark text-center">
+            <tr>
+                <th>Product</th>
+                <th>Variant</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in cart_items %}
+            <tr class="align-middle text-center">
+                <td>{{ item.product_variant.product.name }}</td>
+                <td>{{ item.product_variant.color }} - {{ item.product_variant.size }}</td>
+                <td>
+                    <div class="input-group justify-content-center">
+                        <button class="btn btn-outline-secondary btn-sm update-quantity" data-action="decrease" data-item-id="{{ item.id }}">-</button>
+                        <input 
+                            type="number" 
+                            class="form-control text-center quantity-input" 
+                            value="{{ item.quantity }}" 
+                            min="1" 
+                            data-item-id="{{ item.id }}" 
+                            style="max-width: 70px;">
+                        <button class="btn btn-outline-secondary btn-sm update-quantity" data-action="increase" data-item-id="{{ item.id }}">+</button>
+                    </div>
+                </td>
+                <td>${{ item.product_variant.product.price }}</td>
+                <td>${{ item.total_price|floatformat:2 }}</td>
+                <td>
+                    <button class="btn btn-danger btn-sm remove-item" data-item-id="{{ item.id }}">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center">Your cart is empty!</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <a href="" class="btn btn-secondary">Continue Shopping</a>
+        </div>
+        <div class="col-md-6 text-end">
+            <h5 class="d-inline">Grand Total:</h5>
+            <h5 class="d-inline text-success">${{ cart_total|floatformat:2 }}</h5>
+            <a href="" class="btn btn-primary ms-3">Proceed to Checkout</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
