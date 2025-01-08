@@ -1,0 +1,107 @@
+.heading {
+    text-align: center;
+    margin-top: 20px;
+    text-decoration: underline;
+}
+
+.imw {
+    width: 65%;
+    position: relative;
+}
+
+.product {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.overlay {
+    position: absolute;
+    top: 9;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    width: 100%;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #000;
+}
+
+.ccc:hover .overlay {
+    opacity: 0.7;
+}
+
+.text {
+    color: white;
+    font-size: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.cc1 {
+    display: inline-flex; /* Ensure icon and text align properly */
+    align-items: center;
+    justify-content: center;
+}
+
+.cc1 .btn-text {
+    display: inline; /* Show text by default */
+}
+
+@media (max-width: 250px) {
+    .cc1 .btn-text {
+        display: none; /* Hide text when the button is too narrow */
+    }
+}
+
+@media only screen and (max-width: 553px) {
+    .card {
+        margin-top: 25px;
+    }
+}
+
+.card:hover {
+    border: 1px solid;
+    padding: 10px;
+    box-shadow: 2px 5px #837ddd;
+    overflow: hidden; /* Ensures the image stays within the card */
+    position: relative; /* For better control of child elements */
+}
+.card img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    transition: transform 0.5s ease-in, opacity 0.5s ease-in, filter 0.5s ease-in;
+}
+
+.card img:hover {
+    transform: scale(1.1); /* Slightly smaller zoom for a natural look */
+}
+
+img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    overflow: hidden;
+    transition-timing-function: ease-in;
+    transition: 0.5s;
+}
+
+img:hover {
+    -moz-transform: scale(1.25);
+    -webkit-transform: scale(1.25);
+    transform: scale(1.40);
+    transition-timing-function: ease-in;
+    transition: 0.5s;
+}

@@ -1,0 +1,118 @@
+/* Footer Custom Styles */
+.custom-footer {
+  background-color: rgba(255, 255, 255, 0.9);  /* Same as the navbar */
+  transition: background-color 0.3s ease; /* Smooth transition effect */
+  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.1); /* Light shadow for footer */
+  margin-top: 50px;
+}
+
+.custom-footer.scrolled {
+  background-color: rgba(255, 255, 255, 0.7); /* More transparent on scroll */
+}
+
+/* Footer Link Styles */
+.footer-link-custom {
+  color: #000;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color 0.3s ease; /* Smooth color transition */
+}
+
+.footer-link-custom:hover {
+  color: #007bff; /* Change color on hover */
+}
+
+/* Footer Social Icon Styles */
+.footer-icon-custom {
+  color: white;  /* White color for icons */
+  font-size: 24px; /* Modern, larger icon size */
+  transition: color 0.3s ease; /* Smooth icon color transition */
+}
+
+.footer-icon-custom:hover {
+  color: #007bff; /* Change color of icon on hover */
+}
+
+/* Footer Title Styles */
+.footer-title-custom {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 1em;
+}
+
+/* Footer List Styles */
+.footer-list-custom {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.footer-list-custom li {
+  margin-bottom: 0.5em;
+}
+
+/* Space between sections */
+.custom-footer .row {
+  display: flex;
+  justify-content: space-between;
+  gap: 3rem;  /* Increased gap between sections */
+  margin-bottom: 2rem; /* Margin between rows */
+}
+
+/* Centering the social icons container */
+.footer-social-icons {
+  display: flex;
+  justify-content: center; /* Center icons horizontally */
+  gap: 1.5rem; /* Space between icons */
+  align-items: center; /* Ensure vertical alignment of icons */
+}
+
+/* Responsive Design for Footer */
+@media screen and (max-width: 768px) {
+  .custom-footer .container {
+      text-align: center;  /* Center content on small screens */
+  }
+
+  .custom-footer .row {
+      flex-direction: column; /* Stack columns on smaller screens */
+  }
+
+  .footer-title-custom {
+      font-size: 1.1rem; /* Adjust title size for mobile */
+  }
+
+  .footer-link-custom {
+      font-size: 0.9rem; /* Smaller links for mobile */
+  }
+
+  .footer-icon-custom {
+      font-size: 20px; /* Smaller icons for mobile */
+  }
+}
+
+/* Large Device (Desktop) Footer Styling */
+@media screen and (min-width: 1024px) {
+  /* Ensure the footer content is spaced out and aligned */
+  .custom-footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 3rem; /* Add space between sections */
+  }
+
+  .custom-footer .row {
+      flex-direction: row; /* Keep the layout in row on large screens */
+      justify-content: space-between; /* Space out the columns */
+  }
+
+  .footer-social-icons {
+      justify-content: center;  /* Keep icons centered on large screens */
+      gap: 2rem; /* Increase space between icons */
+  }
+
+  /* Add padding to the footer sections for better spacing */
+  .custom-footer .col {
+      padding-left: 1rem;
+      padding-right: 1rem;
+  }
+}

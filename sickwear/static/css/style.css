@@ -51,47 +51,6 @@ textarea.form-control {
     font-weight: bold;
 }
 
-/* General styling for the carousel controls */
-.carousel-control-prev,
-.carousel-control-next {
-    width: 50px;
-    height: 50px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
-    position: absolute;
-    top: 50%; /* Align vertically */
-    transform: translateY(-50%); /* Adjust for perfect vertical alignment */
-}
-
-/* Show buttons only on carousel hover */
-#categoryCarousel:hover .carousel-control-prev,
-#categoryCarousel:hover .carousel-control-next {
-    opacity: 1;
-}
-
-/* Adjust button position to the sides */
-.carousel-control-prev {
-    left: -30px; /* Adjust based on your layout */
-}
-
-.carousel-control-next {
-    right: -30px; /* Adjust based on your layout */
-}
-
-/* Ensure the buttons are properly aligned */
-.carousel-control-prev-icon,
-.carousel-control-next-icon {
-    width: 20px;
-    height: 20px;
-    background-size: contain;
-}
-
-
 /* Product details page */
 .card {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
