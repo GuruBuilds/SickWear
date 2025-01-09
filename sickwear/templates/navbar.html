@@ -1,0 +1,137 @@
+<nav class="navbar navbar-expand-md bg-body-tertiary">
+    <div class="container-xl">
+        <a class="navbar-brand fs-1" href="{% url 'index' %}">Sickwear</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Action</a></li>
+                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <div class="search-and-icons mx-2">
+                <form class="d-flex mb-2 me-2" role="search">
+                    <input class="form-control me-2" type="search" aria-label="Search">
+                </form>
+                <div class="user-icons d-flex mb-2">
+                    <!-- Profile Icon Section -->
+                    <div class="user-icons d-flex mb-2">
+                        <div class="profile px-0">
+                            {% if user.is_authenticated %}
+                            <!-- If user is authenticated, show username and dropdown -->
+                            <div class="dropdown">
+                                <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                                        class="rounded-circle" style="width: 36px;" alt="Avatar" />
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-start">
+                                    <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
+                                    <li><a class="dropdown-item" href="#">Orders</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
+                                </ul>
+                            </div>
+                            {% else %}
+                            <!-- If user is not authenticated, show login/signup button -->
+                            <div class="dropdown">
+                                <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                    <i class="bi bi-person"></i> <!-- Profile Icon -->
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-start">
+                                    <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
+                                    <li><a class="dropdown-item" href="#">Orders</a></li>
+                                    <li>
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li><a class="dropdown-item btn btn-outline-secondary"
+                                            href="{% url 'signin' %}">Sign UP / Login</a>
+                                </ul>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Wishlist Icon with Dropdown Summary -->
+                    <div class="wishlist px-0">
+                        <div class="dropdown">
+                            <!-- Wishlist Icon with Indicator -->
+                            <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+                                <div class="indicator">
+                                    <i class="bi bi-heart"></i>
+                                    <span class="badge badge-sm indicator-item">5</span>
+                                    <!-- Example number of items in wishlist -->
+                                </div>
+                            </button>
+
+                            <!-- Dropdown Menu for Wishlist Summary -->
+                            <div class="dropdown-menu dropdown-menu-start p-3 w-52 shadow-lg bg-base-100">
+                                <div class="card-body">
+                                    <span class="text-lg font-bold">5 Items</span> <!-- Example: Number of items -->
+                                    <span class="text-info">Wishlist Total: $500</span>
+                                    <!-- Example: Wishlist total value -->
+                                    <div class="card-actions">
+                                        <a href="{% url 'wish_list' %}" class="btn btn-primary btn-block">View
+                                            Wishlist</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cart Icon with Dropdown Summary -->
+                    <div class="cart px-0">
+                        <div class="dropdown">
+                            <!-- Cart Icon with Indicator -->
+                            <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
+                                aria-expanded="false">
+
+                                <div class="indicator">
+                                    <i class="bi bi-cart3"></i>
+                                    <span class="badge badge-sm indicator-item">8</span>
+                                    <!-- Example number of items in cart -->
+                                </div>
+                            </button>
+
+                            <!-- Dropdown Menu for Cart Summary -->
+                            <div class="dropdown-menu dropdown-menu-end p-3 w-52 shadow-lg bg-base-100">
+                                <div class="card-body">
+                                    <span class="text-lg font-bold">8 Items</span> <!-- Example: Number of items -->
+                                    <span class="text-info">Subtotal: $999</span> <!-- Example: Subtotal -->
+                                    <div class="card-actions">
+                                        <a href="{% url 'view_cart' %}" class="btn btn-primary btn-block">View
+                                            Cart</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
