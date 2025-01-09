@@ -23,6 +23,8 @@
 </head>
 
 <body>
+    <!-- Navbar Section -->
+    {% block navbar %}
     <nav class="navbar navbar-expand-md bg-body-tertiary">
         <div class="container-xl">
             <a class="navbar-brand fs-1" href="{% url 'index' %}">Sickwear</a>
@@ -160,6 +162,7 @@
             </div>
         </div>
     </nav>
+    {% endblock %}
 
     {% if messages %}
     <div class="alerts-container">
@@ -214,6 +217,7 @@
     </script>
 
     <!-- Footer Section -->
+    {% block footer %}
     <footer class="custom-footer text-light py-5">
         <div class="container">
             <div class="row">
@@ -272,7 +276,7 @@
             </div>
         </div>
     </footer>
-
+    {% endblock %}
 
 </body>
 
