@@ -72,16 +72,16 @@ class Command(BaseCommand):
                 variants.append(variant)
         self.stdout.write(self.style.SUCCESS(f"{len(variants)} Product Variants created."))
 
-        # # Generate Carts and CartItems
-        # for user in users:
-        #     cart = Cart.objects.create(user=user)
-        #     for _ in range(randint(1, 5)):  # 1-5 items per cart
-        #         CartItem.objects.create(
-        #             cart=cart,
-        #             product_variant=choice(variants),
-        #             quantity=randint(1, 5)
-        #         )
-        # self.stdout.write(self.style.SUCCESS("Carts and CartItems created."))
+        # Generate Carts and CartItems
+        for user in users:
+            cart = Cart.objects.create(user=user)
+            for _ in range(randint(1, 5)):  # 1-5 items per cart
+                CartItem.objects.create(
+                    cart=cart,
+                    product_variant=choice(variants),
+                    quantity=randint(1, 5)
+                )
+        self.stdout.write(self.style.SUCCESS("Carts and CartItems created."))
 
         # # Generate Orders and OrderItems
         # for user in users:
@@ -111,11 +111,11 @@ class Command(BaseCommand):
         #         )
         # self.stdout.write(self.style.SUCCESS("Reviews created."))
 
-        # # Generate Wishlists
-        # for user in users:
-        #     for _ in range(randint(1, 5)):  # 1-5 wishlist items per user
-        #         Wishlist.objects.create(
-        #             user=user,
-        #             product=choice(products)
-        #         )
-        # self.stdout.write(self.style.SUCCESS("Wishlists created."))
+        # Generate Wishlists
+        for user in users:
+            for _ in range(randint(1, 5)):  # 1-5 wishlist items per user
+                Wishlist.objects.create(
+                    user=user,
+                    product=choice(products)
+                )
+        self.stdout.write(self.style.SUCCESS("Wishlists created."))
