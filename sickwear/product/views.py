@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from user.models import Category, Product, ProductVariant, Cart, CartItem
+from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist
 from django.contrib import messages
 
 # Create your views here.
@@ -68,3 +68,10 @@ def view_cart(request):
     # Calculate the total cost of the cart
     cart_total = sum(item.product_variant.product.price * item.quantity for item in cart_items)
     return render(request, 'product/view_cart.html', {'cart_items': cart_items, 'cart_total': cart_total})
+
+
+
+def wish_list(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    total_price = sum(item.product.price for item in wishlist_items)
+    return render(request, 'product/wishlist.html', {'wishlist_items': wishlist_items, 'total_price': total_price})
