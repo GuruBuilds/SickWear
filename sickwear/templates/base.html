@@ -41,44 +41,6 @@
 
     {% block content %}
     {% endblock %}
-    <script>
-        function toggleNavbar() {
-            const navbar = document.getElementById('navbarNav');
-            navbar.classList.toggle('open'); // Toggle 'open' class on the navbar for sliding effect
-        }
-        window.addEventListener("scroll", function () {
-            var navbar = document.querySelector(".navbar");
-
-            if (window.scrollY > 50) { // You can adjust the scroll threshold
-                navbar.classList.add("scrolled");
-            } else {
-                navbar.classList.remove("scrolled");
-            }
-        });
-        document.addEventListener("DOMContentLoaded", function () {
-            const buttons = document.querySelectorAll(".cc1");
-            buttons.forEach(button => {
-                const text = button.querySelector(".btn-text");
-                if (button.offsetWidth < 250) {
-                    text.style.display = "none";
-                } else {
-                    text.style.display = "inline";
-                }
-            });
-
-            // Optional: Handle window resizing
-            window.addEventListener("resize", () => {
-                buttons.forEach(button => {
-                    const text = button.querySelector(".btn-text");
-                    if (button.offsetWidth < 250) {
-                        text.style.display = "none";
-                    } else {
-                        text.style.display = "inline";
-                    }
-                });
-            });
-        });
-    </script>
 
     <!-- Footer Section -->
     {% block footer %}
