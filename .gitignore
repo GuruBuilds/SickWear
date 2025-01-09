@@ -4,6 +4,7 @@ myenv/
 
 # exclude the .pyc files
 *.pyc
+__pycache__/
 
 
 # exclude the media files
