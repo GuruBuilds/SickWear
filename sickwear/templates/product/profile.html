@@ -1,0 +1,419 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="mt-5">
+        <div class="main-body">
+            <div class="row gutters-sm">
+                <div class="col-md-3 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin"
+                                    class="rounded-circle" width="100">
+                                <div class="mt-3">
+                                    <h4>John Doe</h4>
+                                    <p class="text-secondary mb-1">Full Stack Developer</p>
+                                    <p class="text-muted font-size-sm">Bay Area, San Francisco, CA</p>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-center align-items-center list-group-item-action py-3" onclick="updateContent('dashboard', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #160f0f;">
+                                    <path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10-10h8v8h-8V3zm0 10h8v8h-8v-8z" />
+                                </svg>
+                                <a href="#" class="text-decoration-none text-dark ms-2">Dashboard</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-center align-items-center list-group-item-action py-3" onclick="updateContent('orders', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: #007bff;">
+                                    <path d="M7 4h-2l-1 2H1v2h3l3 9h12v-2H7l-1-2h10l1-2H7l-1-2h10l1-2H7l-1-2h10l1-2H7z" />
+                                    <circle cx="9" cy="21" r="1.5" />
+                                    <circle cx="17" cy="21" r="1.5" />
+                                </svg>
+                                <a href="#" class="text-decoration-none text-dark ms-2">Orders</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-center align-items-center list-group-item-action py-3" onclick="updateContent('wishlist', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                                </svg>
+                                <a href="#" class="text-decoration-none text-dark ms-2">Wishlist</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-center align-items-center list-group-item-action py-3" onclick="updateContent('notifications', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                                    <path d="M12 22c1.1 0 2-.9 2-2H10c0 1.1.9 2 2 2zm6-6V10c0-3.07-1.64-5.64-4.12-6.32C13.04 3.4 12.56 3 12 3s-1.04.4-1.88.68C7.64 4.36 6 6.93 6 10v6l-1.29 1.29c-.63.63-.29 1.71.71 1.71h14.58c1 0 1.34-1.08.71-1.71L18 16z" />
+                                </svg>
+                                <a href="#" class="text-decoration-none text-dark ms-2">Notifications</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-center align-items-center list-group-item-action py-3" onclick="updateContent('address', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                                    <path d="M12 2C8.13 2 5 5.13 5 9c0 3.31 7 11 7 11s7-7.69 7-11c0-3.87-3.13-7-7-7zm0 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" />
+                                </svg>
+                                <a href="#" class="text-decoration-none text-dark ms-2">Address</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-center align-items-center list-group-item-action py-3" onclick="updateContent('profile', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current">
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-3.31 0-10 1.67-10 5v2h20v-2c0-3.33-6.69-5-10-5z" />
+                                </svg>
+                                <a href="#" class="text-decoration-none text-dark ms-2">Profile</a>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-center align-items-center list-group-item-action py-3" onclick="updateContent('logout', this)">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                    <path d="M497 273l-136 136c-15 15-41 4.5-41-17v-72H176c-13 0-24-11-24-24v-48c0-13 11-24 24-24h144V120c0-21.5 26-32 41-17l136 136c9 9 9 25 0 34zM176 64h48c13 0 24 11 24 24s-11 24-24 24h-48v288h48c13 0 24 11 24 24s-11 24-24 24h-48c-35.3 0-64-28.7-64-64V128c0-35.3 28.7-64 64-64z" />
+                                </svg>
+                                <a href="#" class="text-decoration-none text-danger ms-2">Logout</a>
+                            </li>
+                        </ul>                        
+                    </div>
+                </div>
+                <div class="col-md-8" id="content-area">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div id="dynamic-content">
+                                <h5>Welcome to your dashboard!</h5>
+                                <p>Select an option from the left to view more details.</p>
+                            </div>
+                        </div>
+
+                        <!-- custom -->
+                        <div id="user-dashboard">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card shadow-sm border-0">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Orders</h6>
+                                            <h4 style="color: #4CAF50;">5</h4>
+                                            <p class="text-success"><i class="fas fa-info-circle"></i> 2 in transit</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card shadow-sm border-0">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Wishlist</h6>
+                                            <h4 style="color: #FF5722;">12</h4>
+                                            <p class="text-muted">Items saved for later</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card shadow-sm border-0">
+                                        <div class="card-body text-center">
+                                            <h6 class="text-muted">Notifications</h6>
+                                            <h4 style="color: #3F51B5;">3</h4>
+                                            <p class="text-muted">New updates</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Responsive Recent Orders Section -->
+                            <div class="mt-4">
+                                <h5 class="mb-3">Your Recent Orders</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-hover d-none d-md-table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Order ID</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Items</th>
+                                                <th scope="col">Amount</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>#45678</td>
+                                                <td>Jan 15, 2025</td>
+                                                <td>3</td>
+                                                <td>$123.00</td>
+                                                <td><span class="badge" style="background-color: #FFC107; color: #fff;">In
+                                                        Transit</span></td>
+                                                <td>
+                                                    <button class="modern-button">Track</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>#45677</td>
+                                                <td>Jan 10, 2025</td>
+                                                <td>1</td>
+                                                <td>$56.00</td>
+                                                <td><span class="badge"
+                                                        style="background-color: #4CAF50; color: #fff;">Delivered</span>
+                                                </td>
+                                                <td>
+                                                    <button class="modern-button">Reorder</button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>#45676</td>
+                                                <td>Jan 5, 2025</td>
+                                                <td>2</td>
+                                                <td>$98.00</td>
+                                                <td><span class="badge"
+                                                        style="background-color: #F44336; color: #fff;">Cancelled</span>
+                                                </td>
+                                                <td>
+                                                    <button class="modern-button">Contact Support</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!-- Card View for Small Screens -->
+                                    <div class="d-md-none">
+                                        <div class="card shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <h6>Order ID: #45678</h6>
+                                                <p>Date: Jan 15, 2025</p>
+                                                <p>Items: 3</p>
+                                                <p>Amount: $123.00</p>
+                                                <p>Status: <span class="badge"
+                                                        style="background-color: #FFC107; color: #fff;">In Transit</span>
+                                                </p>
+                                                <button class="modern-button">Track</button>
+                                            </div>
+                                        </div>
+                                        <div class="card shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <h6>Order ID: #45677</h6>
+                                                <p>Date: Jan 10, 2025</p>
+                                                <p>Items: 1</p>
+                                                <p>Amount: $56.00</p>
+                                                <p>Status: <span class="badge"
+                                                        style="background-color: #4CAF50; color: #fff;">Delivered</span></p>
+                                                <button class="modern-button">Reorder</button>
+                                            </div>
+                                        </div>
+                                        <div class="card shadow-sm mb-3">
+                                            <div class="card-body">
+                                                <h6>Order ID: #45676</h6>
+                                                <p>Date: Jan 5, 2025</p>
+                                                <p>Items: 2</p>
+                                                <p>Amount: $98.00</p>
+                                                <p>Status: <span class="badge"
+                                                        style="background-color: #F44336; color: #fff;">Cancelled</span></p>
+                                                <button class="modern-button">Contact Support</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Wishlist Section -->
+                            <div class="mt-4">
+                                <h5 class="mb-3">Your Wishlist</h5>
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card shadow-sm">
+                                            <img src="https://via.placeholder.com/150" class="card-img-top"
+                                                alt="Product Image">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">Product Name</h6>
+                                                <p class="text-muted">$45.00</p>
+                                                <button class="custom-btn">Add to Cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card shadow-sm">
+                                            <img src="https://via.placeholder.com/150" class="card-img-top"
+                                                alt="Product Image">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">Product Name</h6>
+                                                <p class="text-muted">$99.00</p>
+                                                <button class="custom-btn">Add to Cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card shadow-sm">
+                                            <img src="https://via.placeholder.com/150" class="card-img-top"
+                                                alt="Product Image">
+                                            <div class="card-body text-center">
+                                                <h6 class="card-title">Product Name</h6>
+                                                <p class="text-muted">$150.00</p>
+                                                <button class="custom-btn">Add to Cart</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Address Form Template -->
+                        <div id="address-form" style="display: none;">
+                            <h5>Manage Your Address</h5>
+                            <form id="checkoutAddressForm" action="{% url 'add_or_edit_address' %}" method="POST">
+                                {% csrf_token %}
+                                <!-- Street Address -->
+                                <div class="mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" name="street_address" id="street_address"
+                                            placeholder="Street Address" required {% if user_address %}
+                                            value="{{ user_address.street_address }}" {% endif %}>
+                                        <label for="street_address">Street Address</label>
+                                    </div>
+                                </div>
+            
+                                <!-- Apartment Number (Optional) -->
+                                <div class="mb-3">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control" name="apartment_number" id="apartment_number"
+                                            placeholder="Apartment Number (optional)" {% if user_address %}
+                                            value="{{ user_address.apartment_number }}" {% endif %}>
+                                        <label for="apartment_number">Apartment Number (Optional)</label>
+                                    </div>
+                                </div>
+            
+                                <!-- City -->
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" name="city" id="city" placeholder="City"
+                                                required {% if user_address %} value="{{ user_address.city }}" {% endif %}>
+                                            <label for="city">City</label>
+                                        </div>
+                                    </div>
+            
+                                    <!-- State -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" name="state" id="state" placeholder="State"
+                                                required {% if user_address %} value="{{ user_address.state }}" {% endif %}>
+                                            <label for="state">State</label>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <!-- Country -->
+                                <div class="row mb-3">
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" name="country" id="country"
+                                                placeholder="Country" required {% if user_address %}
+                                                value="{{ user_address.country }}" {% endif %}>
+                                            <label for="country">Country</label>
+                                        </div>
+                                    </div>
+            
+                                    <!-- Pincode -->
+                                    <div class="col-12 col-md-6">
+                                        <div class="form-floating">
+                                            <input type="text" class="form-control" name="pincode" id="pincode"
+                                                placeholder="Pincode" maxlength="10" required {% if user_address %}
+                                                value="{{ user_address.pincode }}" {% endif %}
+                                                oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                            <label for="pincode">Pincode</label>
+                                        </div>
+                                    </div>
+                                </div>
+            
+                                <!-- Set as Default Address -->
+                                <div class="form-check mb-3">
+                                    <input type="checkbox" class="form-check-input" name="is_default" id="is_default"
+                                    {% if user_address and user_address.is_default %} checked {% endif %}>
+                                    <label class="form-check-label" for="is_default">Set as default address</label>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block js_loader %}
+        <script>
+            function updateContent(section, element) {
+                const contentArea = document.getElementById('dynamic-content');
+                const addressForm = document.getElementById('address-form');
+                const userDashboard = document.getElementById('user-dashboard');
+                const listItems = document.querySelectorAll('.list-group-item');
+
+                // Remove active class from all items
+                listItems.forEach(item => {
+                    item.classList.remove('active-item');
+                });
+
+                // Add active class to the clicked item
+                element.classList.add('active-item');
+
+                // Function to show or hide the address form
+                function toggleAddressForm(show = false) {
+                    addressForm.style.display = show ? 'block' : 'none';
+                }
+                function toggleuserDashboard(show = false) {
+                    userDashboard.style.display = show ? 'block' : 'none';
+                }
+
+                // Update content based on the clicked section
+                switch (section) {
+                    case 'dashboard':
+                    contentArea.innerHTML = ''; // Clear previous content
+                        toggleuserDashboard(true);
+                        break;
+                    case 'orders':
+                        contentArea.innerHTML = `
+                            <h5>Orders</h5>
+                            <p>Here you can view your past orders and their statuses.</p>
+                        `;
+                        toggleAddressForm(false);
+                        toggleuserDashboard(false);
+                        break;
+                    case 'wishlist':
+                        contentArea.innerHTML = `
+                            <h5>Wishlist</h5>
+                            <p>Your wishlist items are listed here.</p>
+                        `;
+                        toggleAddressForm(false);
+                        toggleuserDashboard(false);
+                        break;
+                    case 'notifications':
+                        contentArea.innerHTML = `
+                            <h5>Notifications</h5>
+                            <p>Check your notifications and alerts here.</p>
+                        `;
+                        toggleAddressForm(false);
+                        toggleuserDashboard(false);
+                        break;
+                    case 'address':
+                        contentArea.innerHTML = ''; // Clear previous content
+                        toggleAddressForm(true); // Show address form
+                        toggleuserDashboard(false);
+                        break;
+                    case 'profile':
+                        contentArea.innerHTML = `
+                            <h5>Your Profile</h5>
+                            <p>Manage your profile information here.</p>
+                        `;
+                        toggleAddressForm(false);
+                        toggleuserDashboard(false);
+                        break;
+                    case 'logout':
+                        contentArea.innerHTML = `
+                            <h5>Logout</h5>
+                            <p>You have been logged out successfully.</p>
+                        `;
+                        toggleAddressForm(false);
+                        toggleuserDashboard(false);
+                        break;
+                    default:
+                        contentArea.innerHTML = `
+                            <h5>Welcome to your dashboard!</h5>
+                            <p>Select an option from the left to view more details.</p>
+                        `;
+                        toggleAddressForm(false);
+                        toggleuserDashboard(false);
+                        break;
+                }
+            }
+        </script>
+    {% endblock %}
+{% endblock %}
