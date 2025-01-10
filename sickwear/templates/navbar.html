@@ -40,18 +40,23 @@
                             {% if user.is_authenticated %}
                             <!-- If user is authenticated, show username and dropdown -->
                             <div class="dropdown">
-                                <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
-                                        class="rounded-circle" style="width: 36px;" alt="Avatar" />
+                                <button class="profile-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="profile-container">
+                                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                                             alt="Avatar" class="profile-image" />
+                                        <span class="profile-username">{{ user.username }}</span>
+                                    </div>
                                 </button>
-                                <ul class="dropdown-menu dropdown-menu-start">
-                                    <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
-                                    <li><a class="dropdown-item" href="#">Orders</a></li>
+                                <ul class="dropdown-menu dropdown-menu-start w-75">
+                                    <li>
+                                        <a class="dropdown-item" href="#">Orders</a>
+                                    </li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item" href="{% url 'signout' %}">Logout</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'signout' %}">Logout</a>
+                                    </li>
                                 </ul>
                             </div>
                             {% else %}
@@ -62,13 +67,16 @@
                                     <i class="bi bi-person"></i> <!-- Profile Icon -->
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-start">
-                                    <li><a class="dropdown-item" href="#">{{ user.username }}</a></li>
-                                    <li><a class="dropdown-item" href="#">Orders</a></li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">Orders</a>
+                                    </li>
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
-                                    <li><a class="dropdown-item btn btn-outline-secondary"
+                                    <li>
+                                        <a class="dropdown-item btn btn-outline-secondary"
                                             href="{% url 'signin' %}">Sign UP / Login</a>
+                                    </li>
                                 </ul>
                             </div>
                             {% endif %}
@@ -89,7 +97,7 @@
                             </button>
 
                             <!-- Dropdown Menu for Wishlist Summary -->
-                            <div class="dropdown-menu dropdown-menu-start p-3 w-52 shadow-lg bg-base-100">
+                            <div class="dropdown-menu dropdown-menu-start py-3 w-75 shadow-lg bg-base-100">
                                 <div class="card-body">
                                     <span class="text-lg font-bold">5 Items</span> <!-- Example: Number of items -->
                                     <span class="text-info">Wishlist Total: $500</span>
@@ -118,7 +126,7 @@
                             </button>
 
                             <!-- Dropdown Menu for Cart Summary -->
-                            <div class="dropdown-menu dropdown-menu-end p-3 w-52 shadow-lg bg-base-100">
+                            <div class="dropdown-menu dropdown-menu-end py-3 w-75 shadow-lg bg-base-100">
                                 <div class="card-body">
                                     <span class="text-lg font-bold">8 Items</span> <!-- Example: Number of items -->
                                     <span class="text-info">Subtotal: $999</span> <!-- Example: Subtotal -->
