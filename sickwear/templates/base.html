@@ -10,7 +10,6 @@
     {% block cdn_url %}
         {% include './cdn_urls.html' %}
     {% endblock %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
     <link rel="stylesheet" href="{% static 'css/footer.css' %}">
     {% block extra_css %}{% endblock %}
@@ -39,6 +38,9 @@
     <!-- Footer Section -->
     {% block footer %}
         {% include './footer.html' %}
+    {% endblock %}
+
+    {% block js_loader %}
     {% endblock %}
 
 </body>

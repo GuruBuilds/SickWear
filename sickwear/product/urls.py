@@ -12,4 +12,5 @@ urlpatterns = [
     path('cart/update/', views.update_cart_item_quantity, name='update_cart_item'),
     path('cart/remove/', views.remove_cart_item, name='remove_cart_item'),
     path('add-or-edit-address', views.add_or_edit_address, name='add_or_edit_address'),
+    path('profile', views.profile, name='profile'),
 ]
