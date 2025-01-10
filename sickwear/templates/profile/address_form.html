@@ -1,0 +1,47 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<!-- Address Form Template -->
+<div id="address-form" style="display: none;">
+    <h5>Manage Your Address</h5>
+    <form>
+        <div class="mb-3">
+            <label for="fullName" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullName"
+                placeholder="Enter your full name" required>
+        </div>
+        <div class="mb-3">
+            <label for="addressLine1" class="form-label">Address Line 1</label>
+            <input type="text" class="form-control" id="addressLine1"
+                placeholder="Enter your address" required>
+        </div>
+        <div class="mb-3">
+            <label for="addressLine2" class="form-label">Address Line 2</label>
+            <input type="text" class="form-control" id="addressLine2"
+                placeholder="Apartment, suite, etc. (optional)">
+        </div>
+        <div class="mb-3">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" id="city" placeholder="Enter your city"
+                required>
+        </div>
+        <div class="mb-3">
+            <label for="state" class="form-label">State</label>
+            <input type="text" class="form-control" id="state" placeholder="Enter your state"
+                required>
+        </div>
+        <div class="mb-3">
+            <label for="zipCode" class="form-label">Zip Code</label>
+            <input type="text" class="form-control" id="zipCode"
+                placeholder="Enter your zip code" required>
+        </div>
+        <div class="mb-3">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" class="form-control" id="country"
+                placeholder="Enter your country" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Address</button>
+    </form>
+</div>
+{% endblock %}

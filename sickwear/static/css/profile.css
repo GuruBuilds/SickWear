@@ -1,0 +1,29 @@
+body{
+    margin-top:50px;
+    color: #1a202c;
+    text-align: left;  
+}
+
+#content-area {
+    margin-top: 20px; /* Add some space above the content area */
+}
+
+.list-group-item {
+    padding: 15px 20px; /* Increase padding for larger clickable area */
+    font-size: 1.1rem; /* Increase font size for better readability */
+    transition: background-color 0.3s, color 0.3s ease; /* Smooth transition for background and text color */
+}
+
+.list-group-item:hover {
+    background-color: #e9ecef; /* Light background on hover */
+    color: #0056b3; /* Change text color on hover */
+}
+
+.list-group-item a {
+    width: 100%; /* Make the link take the full width */
+    display: block; /* Ensure the link is block-level */
+    padding: 10px; /* Add padding for better click area */
+}
+.active-item {
+    background-color: #f0f0f0; /* Change background color to blue */
+}
