@@ -68,3 +68,76 @@ textarea.form-control {
 .btn-primary:hover {
     background-color: #0056b3;
 }
+
+
+/* CSS for the profile hover effect */
+/* Default state: Button with fixed size */
+.profile-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px; /* Fixed height */
+    padding: 0; /* Remove default padding */
+    background: none; /* Transparent background */
+    border: none; /* No border by default */
+    min-width: 48px; /* Ensures the button is large enough for just the image */
+    overflow: hidden; /* Prevent content overflow */
+    transition: all 0.3s ease; /* Smooth transitions */
+    position: relative; /* Required for inner alignment */
+}
+
+/* Add border when dropdown is active */
+.profile-dropdown-toggle[aria-expanded="true"] {
+    border: 1px solid; /* Border when dropdown is active */
+    border-radius: 5px; /* Optional: Rounded corners */
+}
+
+/* Profile container to hold image and username */
+.profile-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Space between image and username */
+    white-space: nowrap; /* Prevent username wrapping */
+    transition: all 0.3s ease; /* Smooth transitions */
+    width: 48px; /* Default width for image only */
+    overflow: hidden; /* Hide username initially */
+}
+
+/* Hover and active state for showing username */
+.profile-dropdown-toggle:hover .profile-container,
+.profile-dropdown-toggle[aria-expanded="true"] .profile-container {
+    width: auto; /* Expand to fit username */
+    padding: 0 8px; /* Add padding for username */
+}
+
+/* Profile image styling */
+.profile-image {
+    width: 36px;
+    height: 36px;
+    object-fit: cover; /* Ensure proper fit for the image */
+    border-radius: 50%; /* Circular image */
+    transition: all 0.3s ease; /* Smooth transition for resizing */
+}
+
+/* Shrink the image on hover or active state */
+.profile-dropdown-toggle:hover .profile-image,
+.profile-dropdown-toggle[aria-expanded="true"] .profile-image {
+    width: 28px; /* Smaller size on hover/active */
+    height: 28px; /* Maintain aspect ratio */
+}
+
+/* Username hidden by default */
+.profile-username {
+    font-size: 0.9rem;
+    color: #333;
+    opacity: 0;
+    transform: translateX(-5px); /* Slightly offset */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth reveal */
+}
+
+/* Show username on hover or active state */
+.profile-dropdown-toggle:hover .profile-username,
+.profile-dropdown-toggle[aria-expanded="true"] .profile-username {
+    opacity: 1; /* Make username visible */
+    transform: translateX(0); /* Align username */
+}
