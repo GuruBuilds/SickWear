@@ -2,8 +2,7 @@
 {% block title %}Wishlist{% endblock %}
 {% block content %}
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<!-- Wishlist Page -->
 <main id="wishlist" style="max-width:960px; margin: 0 auto;">
     <div class="back text-center mb-3"><a href="#">&#11178; shop</a></div>
     <h1 class="text-center mb-4">Your Wishlist</h1>
@@ -37,34 +36,5 @@
         </div>
     </div>
 </main>
-
-<footer class="container">
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    document.getElementById('btn-move-all').addEventListener('click', function() {
-        // Implement AJAX call to move all items to cart
-        console.log("Moving all items to cart");
-    });
-    function decreaseQuantity(itemId) {
-    let quantityElement = document.getElementById(`quantity-${itemId}`);
-    let quantity = parseInt(quantityElement.innerText);
-    if (quantity > 1) {
-        quantityElement.innerText = quantity - 1;
-    }
-}
-
-function increaseQuantity(itemId) {
-    let quantityElement = document.getElementById(`quantity-${itemId}`);
-    let quantity = parseInt(quantityElement.innerText);
-    quantityElement.innerText = quantity + 1;
-}
-
-function moveToCart(itemId) {
-    // Implement the logic to move the item to the cart
-    alert(`Move item ${itemId} to cart`);
-}
-</script>
 
 {% endblock %}

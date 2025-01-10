@@ -1,5 +1,10 @@
 {% extends "../base.html" %}
+{% load static %}
 {% block title %}Home{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/carousal.css' %}">
+{% endblock %}
 
 {% block content %}
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
@@ -93,6 +98,5 @@
         </div>
     </div>
 </div>
-
 
 {% endblock %}
