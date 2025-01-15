@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist
+from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist, ProductImage
 from django.contrib import messages
 
 # Create your views here.
@@ -12,13 +12,19 @@ def category(request, slug):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     product_varients = ProductVariant.objects.filter(product=product)
+
+    # Get all images for the product
+    product_images = ProductImage.objects.filter(product=product)
+    # Get suggested products (excluding the current product)
     suggested_products = Product.objects.exclude(slug=slug)[:4]
+
+    # Pass all the necessary context to the template
     return render(request, 'product/product_detail.html', {
         'product': product,
         'product_varients': product_varients,
-        'suggested_products': suggested_products
+        'product_images': product_images,  # Pass product images
+        'suggested_products': suggested_products,
     })
-
 
 def add_to_cart(request):
     if request.method == 'POST':
@@ -66,9 +72,8 @@ def view_cart(request):
         item.total_price += item.product_variant.additional_price * item.quantity
 
     # Calculate the total cost of the cart
-    cart_total = sum(item.product_variant.product.price * item.quantity for item in cart_items)
+    cart_total = sum((item.product_variant.product.price +  item.product_variant.additional_price) * item.quantity for item in cart_items)
     return render(request, 'product/view_cart.html', {'cart_items': cart_items, 'cart_total': cart_total})
-
 
 
 def wish_list(request):
