@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from faker import Faker
 from random import choice, randint
-from user.models import User, Category, Product, ProductVariant, Cart, CartItem, Order, OrderItem, Review, Wishlist
+from user.models import User, Category, Product, ProductVariant, Cart, CartItem, Order, OrderItem, Review, Wishlist, ProductImage
 import requests
 from django.core.files.base import ContentFile
 
@@ -13,16 +13,15 @@ class Command(BaseCommand):
 
         # Generate Users
         users = []
-        for _ in range(2):  # 20 demo users
-            user = User.objects.create_user(
-                username=fake.user_name(),
-                email=fake.email(),
-                password="password123",
-                phone_number=9876543211,
-                address=fake.address()
-            )
-            users.append(user)
-        self.stdout.write(self.style.SUCCESS("2 Users created."))
+        user = User.objects.create_user(
+            username=fake.user_name(),
+            email=fake.email(),
+            password="password123",
+            phone_number="9876543211",
+            address=fake.address()
+        )
+        users.append(user)
+        self.stdout.write(self.style.SUCCESS("1 User created."))
 
         # Generate Categories
         categories = []
@@ -32,7 +31,7 @@ class Command(BaseCommand):
                 slug=fake.slug(),
                 description=fake.text(),
             )
-            # Fetch an image from Lorem Picsum
+            # Fetch an image from Lorem Picsum and save it to the backend
             response = requests.get('https://picsum.photos/400/400', stream=True)
             if response.status_code == 200:
                 category.image.save(f"{category.name}.jpg", ContentFile(response.content))
@@ -50,6 +49,7 @@ class Command(BaseCommand):
                 stock=randint(10, 100),
                 category=choice(categories),
             )
+            # Fetch an image from Lorem Picsum and save it to the backend
             response = requests.get('https://picsum.photos/400/400', stream=True)
             if response.status_code == 200:
                 product.image.save(f"{product.name}.jpg", ContentFile(response.content))
@@ -72,6 +72,26 @@ class Command(BaseCommand):
                 variants.append(variant)
         self.stdout.write(self.style.SUCCESS(f"{len(variants)} Product Variants created."))
 
+        # Generate Product Images
+        for product in products:
+            for _ in range(randint(1, 3)):  # 1-3 images per product
+                response = requests.get('https://picsum.photos/400/400', stream=True)
+                if response.status_code == 200:
+                    product_image = ProductImage.objects.create(
+                        product=product,
+                        is_main=False,
+                    )
+                    product_image.image.save(f"{product.name}_{fake.word()}.jpg", ContentFile(response.content))
+            
+            # Ensure at least one main image
+            main_image = ProductImage.objects.create(
+                product=product,
+                is_main=True,
+            )
+            response = requests.get('https://picsum.photos/400/400', stream=True)
+            if response.status_code == 200:
+                main_image.image.save(f"{product.name}_main.jpg", ContentFile(response.content))
+
         # Generate Carts and CartItems
         for user in users:
             cart = Cart.objects.create(user=user)
@@ -83,33 +103,33 @@ class Command(BaseCommand):
                 )
         self.stdout.write(self.style.SUCCESS("Carts and CartItems created."))
 
-        # # Generate Orders and OrderItems
-        # for user in users:
-        #     for _ in range(randint(1, 3)):  # 1-3 orders per user
-        #         order = Order.objects.create(
-        #             user=user,
-        #             total_price=round(fake.pydecimal(left_digits=4, right_digits=2, positive=True), 2),
-        #             status=choice([status[0] for status in Order.STATUS_CHOICES])
-        #         )
-        #         for _ in range(randint(1, 5)):  # 1-5 items per order
-        #             OrderItem.objects.create(
-        #                 order=order,
-        #                 product_variant=choice(variants),
-        #                 quantity=randint(1, 5),
-        #                 price=round(fake.pydecimal(left_digits=3, right_digits=2, positive=True), 2)
-        #             )
-        # self.stdout.write(self.style.SUCCESS("Orders and OrderItems created."))
+        # Generate Orders and OrderItems
+        for user in users:
+            for _ in range(randint(1, 3)):  # 1-3 orders per user
+                order = Order.objects.create(
+                    user=user,
+                    total_price=round(fake.pydecimal(left_digits=4, right_digits=2, positive=True), 2),
+                    status=choice([status[0] for status in Order.STATUS_CHOICES])
+                )
+                for _ in range(randint(1, 5)):  # 1-5 items per order
+                    OrderItem.objects.create(
+                        order=order,
+                        product_variant=choice(variants),
+                        quantity=randint(1, 5),
+                        price=round(fake.pydecimal(left_digits=3, right_digits=2, positive=True), 2)
+                    )
+        self.stdout.write(self.style.SUCCESS("Orders and OrderItems created."))
 
-        # # Generate Reviews
-        # for user in users:
-        #     for _ in range(randint(1, 5)):  # 1-5 reviews per user
-        #         Review.objects.create(
-        #             product=choice(products),
-        #             user=user,
-        #             rating=randint(1, 5),
-        #             comment=fake.sentence()
-        #         )
-        # self.stdout.write(self.style.SUCCESS("Reviews created."))
+        # Generate Reviews
+        for user in users:
+            for _ in range(randint(1, 5)):  # 1-5 reviews per user
+                Review.objects.create(
+                    product=choice(products),
+                    user=user,
+                    rating=randint(1, 5),
+                    comment=fake.sentence()
+                )
+        self.stdout.write(self.style.SUCCESS("Reviews created."))
 
         # Generate Wishlists
         for user in users:
