@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist
+from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist, Address
 from django.contrib import messages
 
 # Create your views here.
@@ -67,8 +67,41 @@ def view_cart(request):
 
     # Calculate the total cost of the cart
     cart_total = sum(item.product_variant.product.price * item.quantity for item in cart_items)
-    return render(request, 'product/view_cart.html', {'cart_items': cart_items, 'cart_total': cart_total})
 
+    # send user addrss to the template
+    user_address = Address.objects.filter(user=request.user).first()
+
+    return render(request, 'product/view_cart.html', {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'user_address': user_address
+    })
+
+def add_or_edit_address(request):
+    if request.method == 'POST':
+        street_address = request.POST['street_address']
+        apartment_number = request.POST.get('apartment_number', '')
+        city = request.POST['city']
+        state = request.POST['state']
+        country = request.POST['country']
+        pincode = request.POST['pincode']
+        is_default = 'is_default' in request.POST  # Checking if the address is marked as default
+
+        # Create an Address instance for the user
+        new_address = Address(
+            user=request.user,
+            street_address=street_address,
+            apartment_number=apartment_number,
+            city=city,
+            state=state,
+            country=country,
+            pincode=pincode,
+            is_default=is_default
+        )
+        new_address.save()
+        messages.success(request, 'Address added successfully.')
+        return JsonResponse({'message': 'Address added successfully.'})
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
 def wish_list(request):
