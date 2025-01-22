@@ -21,15 +21,12 @@
                 <td>{{ item.product_variant.color }} - {{ item.product_variant.size }}</td>
                 <td>
                     <div class="input-group justify-content-center">
-                        <button class="btn btn-outline-secondary btn-sm update-quantity" data-action="decrease" data-item-id="{{ item.id }}">-</button>
-                        <input 
-                            type="number" 
-                            class="form-control text-center quantity-input" 
-                            value="{{ item.quantity }}" 
-                            min="1" 
-                            data-item-id="{{ item.id }}" 
-                            style="max-width: 70px;">
-                        <button class="btn btn-outline-secondary btn-sm update-quantity" data-action="increase" data-item-id="{{ item.id }}">+</button>
+                        <button class="btn btn-outline-secondary btn-sm update-quantity" data-action="decrease"
+                            data-item-id="{{ item.id }}">-</button>
+                        <input type="number" class="form-control text-center quantity-input" value="{{ item.quantity }}"
+                            min="1" data-item-id="{{ item.id }}" style="max-width: 70px;">
+                        <button class="btn btn-outline-secondary btn-sm update-quantity" data-action="increase"
+                            data-item-id="{{ item.id }}">+</button>
                     </div>
                 </td>
                 <td>${{ item.product_variant.product.price }}</td>
@@ -55,7 +52,99 @@
         <div class="col-md-6 text-end">
             <h5 class="d-inline">Grand Total:</h5>
             <h5 class="d-inline text-success">${{ cart_total|floatformat:2 }}</h5>
-            <a href="" class="btn btn-primary ms-3">Proceed to Checkout</a>
+            <button class="btn btn-primary ms-3" data-bs-toggle="modal" data-bs-target="#addressModal">
+                Proceed to Checkout
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addressModalLabel">Enter Your Address</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="checkoutAddressForm" action="{% url 'add_or_edit_address' %}" method="POST">
+                    {% csrf_token %}
+                    <!-- Street Address -->
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="street_address" id="street_address"
+                                placeholder="Street Address" required {% if user_address %}
+                                value="{{ user_address.street_address }}" {% endif %}>
+                            <label for="street_address">Street Address</label>
+                        </div>
+                    </div>
+
+                    <!-- Apartment Number (Optional) -->
+                    <div class="mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="apartment_number" id="apartment_number"
+                                placeholder="Apartment Number (optional)" {% if user_address %}
+                                value="{{ user_address.apartment_number }}" {% endif %}>
+                            <label for="apartment_number">Apartment Number (Optional)</label>
+                        </div>
+                    </div>
+
+                    <!-- City -->
+                    <div class="row mb-3">
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="city" id="city" placeholder="City"
+                                    required {% if user_address %} value="{{ user_address.city }}" {% endif %}>
+                                <label for="city">City</label>
+                            </div>
+                        </div>
+
+                        <!-- State -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="state" id="state" placeholder="State"
+                                    required {% if user_address %} value="{{ user_address.state }}" {% endif %}>
+                                <label for="state">State</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Country -->
+                    <div class="row mb-3">
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="country" id="country"
+                                    placeholder="Country" required {% if user_address %}
+                                    value="{{ user_address.country }}" {% endif %}>
+                                <label for="country">Country</label>
+                            </div>
+                        </div>
+
+                        <!-- Pincode -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="pincode" id="pincode"
+                                    placeholder="Pincode" maxlength="10" required {% if user_address %}
+                                    value="{{ user_address.pincode }}" {% endif %}
+                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <label for="pincode">Pincode</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Set as Default Address -->
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" name="is_default" id="is_default"
+                        {% if user_address and user_address.is_default %} checked {% endif %}>
+                        <label class="form-check-label" for="is_default">Set as default address</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" form="checkoutAddressForm" class="btn btn-primary">Proceed to Payment</button>
+            </div>
         </div>
     </div>
 </div>

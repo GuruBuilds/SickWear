@@ -18,7 +18,7 @@ class Address(models.Model):
     state = models.CharField(max_length=100)
     country = models.CharField(max_length=100)
     pincode = models.CharField(max_length=10)
-    is_default = models.BooleanField(default=False)
+    is_default = models.BooleanField(default=True)
 
     def __str__(self):
         return str(f"{self.street_address}, {self.city}, {self.pincode}")

@@ -14,7 +14,7 @@
                 <form action="{% url 'signup' %}" method="POST">
                     {% csrf_token %}
                     <div class="row g-3">
-                        <!-- First Column -->
+                        <!-- User Details Column -->
                         <div class="col-12 col-md-6">
                             <div class="form-floating">
                                 <input type="text" class="form-control" name="name" id="name" placeholder="Name" required>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-12 col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone" maxlength="10" pattern="\d{10}" required 
+                                <input type="text" class="form-control" name="phone" id="phone" placeholder="Phone" maxlength="15" pattern="\d{10,15}" required
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                 <label for="phone">Phone</label>
                             </div>
@@ -52,12 +52,56 @@
                                 <label for="confirmpassword">Confirm Password</label>
                             </div>
                         </div>
+
+                        <!-- Address Section -->
+                        <div class="col-12 mt-4">
+                            <h4 class="text-center mb-3">Address Details</h4>
+                        </div>
                         <div class="col-12">
                             <div class="form-floating">
-                                <textarea class="form-control" name="address" id="address" rows="2" placeholder="Address"></textarea>
-                                <label for="address">Address</label>
+                                <input type="text" class="form-control" name="street_address" id="street_address" placeholder="Street Address" required>
+                                <label for="street_address">Street Address</label>
                             </div>
                         </div>
+                        <div class="col-12">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="apartment_number" id="apartment_number" placeholder="Apartment Number (optional)">
+                                <label for="apartment_number">Apartment Number (Optional)</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="city" id="city" placeholder="City" required>
+                                <label for="city">City</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="state" id="state" placeholder="State" required>
+                                <label for="state">State</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="country" id="country" placeholder="Country" required>
+                                <label for="country">Country</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" name="pincode" id="pincode" placeholder="Pincode" maxlength="10" required
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                                <label for="pincode">Pincode</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" name="is_default" id="is_default">
+                                <label class="form-check-label" for="is_default">Set as default address</label>
+                            </div>
+                        </div>
+
+                        <!-- Submit Button -->
                         <div class="col-12">
                             <div class="d-grid">
                                 <button class="btn btn-dark btn-lg" type="submit">Sign Up</button>
