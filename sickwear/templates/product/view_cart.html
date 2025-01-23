@@ -149,4 +149,96 @@
     </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Update Quantity
+        $(".update-quantity").click(function () {
+            const action = $(this).data("action");
+            const itemId = $(this).data("item-id");
+            let $quantityInput = $(`.quantity-input[data-item-id="${itemId}"]`);
+            let currentQuantity = parseInt($quantityInput.val());
+
+            if (action === "increase") {
+                currentQuantity += 1;
+            } else if (action === "decrease" && currentQuantity > 1) {
+                currentQuantity -= 1;
+            }
+
+            // Update the input field value
+            $quantityInput.val(currentQuantity);
+
+            // Trigger an AJAX call to update the backend
+            updateCart(itemId, currentQuantity);
+        });
+
+        // Remove Item
+        $(".remove-item").click(function () {
+            const itemId = $(this).data("item-id");
+
+            // Trigger an AJAX call to remove the item
+            $.ajax({
+                url: "cart/remove/", // Your backend endpoint for removing items
+                method: "POST",
+                data: {
+                    item_id: itemId,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Remove the item row from the table
+                        $(`.remove-item[data-item-id="${itemId}"]`).closest("tr").remove();
+
+                        // Update the total price
+                        updateCartTotal(response.cart_total);
+
+                        // Show an empty cart message if needed
+                        if ($("tbody tr").length === 0) {
+                            $("tbody").html('<tr><td colspan="6" class="text-center">Your cart is empty!</td></tr>');
+                        }
+                    }
+                },
+                error: function () {
+                    alert("Failed to remove item. Please try again.");
+                }
+            });
+        });
+
+        // Function to update cart via AJAX
+        function updateCart(itemId, quantity) {
+            debugger;
+            $.ajax({
+                url: "cart/update/", // Your backend endpoint for updating quantities
+                method: "POST",
+                data: {
+                    item_id: itemId,
+                    quantity: quantity,
+                    csrfmiddlewaretoken: "{{ csrf_token }}"
+                },
+                success: function (response) {
+                    if (response.success) {
+                        // Update the total price for this item
+                        $(`.quantity-input[data-item-id="${itemId}"]`)
+                            .closest("tr")
+                            .find("td:nth-child(5)")
+                            .text(`$${response.item_total.toFixed(2)}`);
+
+                        // Update the grand total
+                        updateCartTotal(response.cart_total);
+                    }
+                },
+                error: function () {
+                    alert("Failed to update cart. Please try again.");
+                }
+            });
+        }
+
+        // Function to update the cart total
+        function updateCartTotal(cartTotal) {
+            $(".text-success").text(`$${cartTotal.toFixed(2)}`);
+        }
+    });
+</script>
+
+
 {% endblock %}
