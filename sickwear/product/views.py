@@ -77,6 +77,67 @@ def view_cart(request):
         'user_address': user_address
     })
 
+def update_cart_item_quantity(request):
+    """AJAX handler to update the quantity of a cart item."""
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        quantity = int(request.POST.get('quantity', 1))
+
+        # Get the CartItem object
+        cart_item = get_object_or_404(CartItem, id=item_id)
+
+        # Check if enough stock is available
+        if cart_item.product_variant.stock < quantity:
+            return JsonResponse({
+                'success': False,
+                'error': 'Not enough stock available.',
+            }, status=400)
+
+        # Update the quantity
+        cart_item.quantity = quantity
+        cart_item.save()
+
+        # Calculate total price for the item and the cart
+        item_total = cart_item.quantity * (cart_item.product_variant.product.price + cart_item.product_variant.additional_price)
+        cart_total = sum(
+            item.quantity * (item.product_variant.product.price + item.product_variant.additional_price)
+            for item in cart_item.cart.items.all()
+        )
+
+        return JsonResponse({
+            'success': True,
+            'item_total': item_total,
+            'cart_total': cart_total,
+        })
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
+
+
+def remove_cart_item(request):
+    """AJAX handler to remove an item from the cart."""
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+
+        # Get the CartItem object
+        cart_item = get_object_or_404(CartItem, id=item_id)
+
+        # Remove the item
+        cart = cart_item.cart
+        cart_item.delete()
+
+        # Recalculate the total price of the cart
+        cart_total = sum(
+            item.quantity * (item.product_variant.product.price + item.product_variant.additional_price)
+            for item in cart.items.all()
+        )
+
+        return JsonResponse({
+            'success': True,
+            'cart_total': cart_total,
+        })
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
+
 def add_or_edit_address(request):
     if request.method == 'POST':
         street_address = request.POST['street_address']
