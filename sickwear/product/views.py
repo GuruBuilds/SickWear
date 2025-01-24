@@ -172,4 +172,6 @@ def wish_list(request):
 
 
 def profile(request):
-    return render(request, 'product/profile.html')
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    total_price = sum(item.product.price for item in wishlist_items)
+    return render(request, 'product/profile.html', {'wishlist_items': wishlist_items, 'total_price': total_price})

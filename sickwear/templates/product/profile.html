@@ -80,7 +80,57 @@
                             </div>
                         </div>
 
-                        <!-- custom -->
+                        <!-- Orders page -->
+                        <div id="user-orders" class="o_order" style="display: none;">
+                            <div class="container">
+                              <!-- Your Order Page Content -->
+                              <header class="header">
+                                <button class="back-button">&larr; Back</button>
+                                <h1>My Orders</h1>
+                                <p>Track, manage, and reorder your purchases.</p>
+                              </header>
+                          
+                              <div class="filters">
+                                <select id="status-filter">
+                                  <option value="all">All Status</option>
+                                  <option value="delivered">Delivered</option>
+                                  <option value="in-transit">In Transit</option>
+                                  <option value="processing">Processing</option>
+                                </select>
+                                <select id="sort-filter">
+                                  <option value="latest">Latest</option>
+                                  <option value="oldest">Oldest</option>
+                                  <option value="price-high">Price: High to Low</option>
+                                  <option value="price-low">Price: Low to High</option>
+                                </select>
+                              </div>
+                          
+                              <div class="order-list">
+                                <div class="order-card">
+                                  <div class="order-info">
+                                    <h3>Order #12345</h3>
+                                    <span class="status delivered">Delivered</span>
+                                    <p>Order Date: Jan 15, 2025</p>
+                                    <p>Total: $120.00</p>
+                                  </div>
+                                  <div class="order-actions">
+                                    <button class="track-btn">Track Order</button>
+                                    <button class="reorder-btn">Reorder</button>
+                                  </div>
+                                </div>
+                              </div>
+                          
+                              <footer class="footer">
+                                <button class="nav-btn">Home</button>
+                                <button class="nav-btn">Cart</button>
+                                <button class="nav-btn">Wishlist</button>
+                                <button class="nav-btn">Account</button>
+                              </footer>
+                            </div>
+                          </div>
+                          
+
+                        <!-- dashboard -->
                         <div id="user-dashboard">
                             <div class="row">
                                 <div class="col-md-4 mb-3">
@@ -246,7 +296,6 @@
                             </div>
                         </div>
 
-
                         <!-- Address Form Template -->
                         <div id="address-form" style="display: none;">
                             <h5>Manage Your Address</h5>
@@ -323,6 +372,60 @@
                                 </div>
                             </form>
                         </div>
+
+                        <!-- wishlist page -->
+                        <div id="wishlist" class="o_wishlist" style="display: none;">
+                            <div class="container">
+                                <!-- Header Section -->
+                                <header class="header">
+                                    <button class="back-button">&larr; Shop</button>
+                                    <h1>Your Wishlist</h1>
+                                    <p>Items you wish to purchase in the future.</p>
+                                </header>
+                        
+                                <!-- Wishlist Items -->
+                                <div class="wishlist-list">
+                                    <div class="container-fluid">
+                                        <div class="container my-5"> <!-- Centered container with margin -->
+                                            <div class="row align-items-start">
+                                                <div class="col-12 col-lg-10 mx-auto items"> <!-- Centering and allowing more space on large devices -->
+                                                    {% for item in wishlist_items %}
+                                                    <!-- Wishlist Item -->
+                                                    <div class="wishlistItem row align-items-start mb-3">
+                                                        <div class="col-12 col-sm-3 mb-2">
+                                                            <img class="w-100" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
+                                                        </div>
+                                                        <div class="col-12 col-sm-5 mb-2">
+                                                            <h6 class="">{{ item.product.name }}</h6>
+                                                            <p class="pl-1 mb-0">Price: ${{ item.product.price }}</p>
+                                                        </div>
+                                                        <div class="col-12 col-sm-4 mb-2 d-flex justify-content-between align-items-center">
+                                                            <p id="wishlistItem{{ item.id }}Price" class="mb-0">${{ item.product.price }}</p>
+                                                            <button class="btn btn-primary btn-sm" onclick="moveToCart({{ item.id }})">Move to Cart</button>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    {% empty %}
+                                                    <div class="col-12">
+                                                        <p class="text-center">Your wishlist is empty.</p>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        
+                                <!-- Footer Section -->
+                                <footer class="footer">
+                                    <button class="nav-btn">Home</button>
+                                    <button class="nav-btn">Cart</button>
+                                    <button class="nav-btn">Orders</button>
+                                    <button class="nav-btn">Account</button>
+                                </footer>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -330,90 +433,54 @@
     </div>
 
     {% block js_loader %}
-        <script>
-            function updateContent(section, element) {
-                const contentArea = document.getElementById('dynamic-content');
-                const addressForm = document.getElementById('address-form');
-                const userDashboard = document.getElementById('user-dashboard');
-                const listItems = document.querySelectorAll('.list-group-item');
-
-                // Remove active class from all items
-                listItems.forEach(item => {
-                    item.classList.remove('active-item');
-                });
-
-                // Add active class to the clicked item
-                element.classList.add('active-item');
-
-                // Function to show or hide the address form
-                function toggleAddressForm(show = false) {
-                    addressForm.style.display = show ? 'block' : 'none';
-                }
-                function toggleuserDashboard(show = false) {
-                    userDashboard.style.display = show ? 'block' : 'none';
-                }
-
-                // Update content based on the clicked section
-                switch (section) {
-                    case 'dashboard':
-                    contentArea.innerHTML = ''; // Clear previous content
-                        toggleuserDashboard(true);
-                        break;
-                    case 'orders':
-                        contentArea.innerHTML = `
-                            <h5>Orders</h5>
-                            <p>Here you can view your past orders and their statuses.</p>
-                        `;
-                        toggleAddressForm(false);
-                        toggleuserDashboard(false);
-                        break;
-                    case 'wishlist':
-                        contentArea.innerHTML = `
-                            <h5>Wishlist</h5>
-                            <p>Your wishlist items are listed here.</p>
-                        `;
-                        toggleAddressForm(false);
-                        toggleuserDashboard(false);
-                        break;
-                    case 'notifications':
-                        contentArea.innerHTML = `
-                            <h5>Notifications</h5>
-                            <p>Check your notifications and alerts here.</p>
-                        `;
-                        toggleAddressForm(false);
-                        toggleuserDashboard(false);
-                        break;
-                    case 'address':
-                        contentArea.innerHTML = ''; // Clear previous content
-                        toggleAddressForm(true); // Show address form
-                        toggleuserDashboard(false);
-                        break;
-                    case 'profile':
-                        contentArea.innerHTML = `
-                            <h5>Your Profile</h5>
-                            <p>Manage your profile information here.</p>
-                        `;
-                        toggleAddressForm(false);
-                        toggleuserDashboard(false);
-                        break;
-                    case 'logout':
-                        contentArea.innerHTML = `
-                            <h5>Logout</h5>
-                            <p>You have been logged out successfully.</p>
-                        `;
-                        toggleAddressForm(false);
-                        toggleuserDashboard(false);
-                        break;
-                    default:
-                        contentArea.innerHTML = `
-                            <h5>Welcome to your dashboard!</h5>
-                            <p>Select an option from the left to view more details.</p>
-                        `;
-                        toggleAddressForm(false);
-                        toggleuserDashboard(false);
-                        break;
-                }
+    <script>
+        function updateContent(section, element) {
+            const contentArea = document.getElementById('dynamic-content');
+            const sections = {
+                address: document.getElementById('address-form'),
+                dashboard: document.getElementById('user-dashboard'),
+                orders: document.getElementById('user-orders'),
+                wishlist: document.getElementById('wishlist'),
+            };
+            const listItems = document.querySelectorAll('.list-group-item');
+    
+            // Remove active class from all items and add it to the clicked item
+            listItems.forEach(item => item.classList.remove('active-item'));
+            element.classList.add('active-item');
+    
+            // Show/Hide sections
+            Object.keys(sections).forEach(key => {
+                sections[key].style.display = key === section ? 'block' : 'none';
+            });
+    
+            // Update content based on the clicked section
+            const sectionContents = {
+                notifications: `
+                    <h5>Notifications</h5>
+                    <p>Check your notifications and alerts here.</p>
+                `,
+                profile: `
+                    <h5>Your Profile</h5>
+                    <p>Manage your profile information here.</p>
+                `,
+                logout: `
+                    <h5>Logout</h5>
+                    <p>You have been logged out successfully.</p>
+                `,
+                default: `
+                    <h5>Welcome to your dashboard!</h5>
+                    <p>Select an option from the left to view more details.</p>
+                `,
+            };
+    
+            // Clear content area if the section is a dynamic section
+            if (!sections[section]) {
+                contentArea.innerHTML = sectionContents[section] || sectionContents.default;
+            } else {
+                contentArea.innerHTML = ''; // Clear for predefined sections
             }
-        </script>
+        }
+    </script>
+    
     {% endblock %}
 {% endblock %}

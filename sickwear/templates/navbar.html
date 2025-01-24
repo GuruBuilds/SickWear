@@ -51,6 +51,9 @@
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-start w-75">
                                     <li>
+                                        <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
+                                    </li>
+                                    <li>
                                         <a class="dropdown-item" href="#">Orders</a>
                                     </li>
                                     <li>
@@ -105,7 +108,7 @@
                                     <span class="text-info">Wishlist Total: $500</span>
                                     <!-- Example: Wishlist total value -->
                                     <div class="card-actions">
-                                        <a href="{% url 'wish_list' %}" class="btn btn-primary btn-block">View
+                                        <a href="{% url 'profile' %}" class="btn btn-primary btn-block">View
                                             Wishlist</a>
                                     </div>
                                 </div>
