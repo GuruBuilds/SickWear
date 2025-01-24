@@ -1,5 +1,6 @@
 /* -----------------------Category Section card Dessign------------------------------------- */
 
+
 textarea.form-control {
     height: auto !important; /* Allow the height to be controlled by the rows attribute */
     min-height: calc(1.5em * 3); /* Minimum height to match 3 rows */
@@ -59,14 +60,17 @@ textarea.form-control {
     border: none;
     border-radius: 8px;
 }
+
 .card-title {
     font-size: 1.25rem;
     font-weight: bold;
 }
+
 .btn-primary {
     background-color: #007bff;
     border: none;
 }
+
 .btn-primary:hover {
     background-color: #0056b3;
 }
