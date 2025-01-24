@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist
+from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist, Address
 from django.contrib import messages
 
 # Create your views here.
@@ -67,11 +67,111 @@ def view_cart(request):
 
     # Calculate the total cost of the cart
     cart_total = sum(item.product_variant.product.price * item.quantity for item in cart_items)
-    return render(request, 'product/view_cart.html', {'cart_items': cart_items, 'cart_total': cart_total})
 
+    # send user addrss to the template
+    user_address = Address.objects.filter(user=request.user).first()
+
+    return render(request, 'product/view_cart.html', {
+        'cart_items': cart_items,
+        'cart_total': cart_total,
+        'user_address': user_address
+    })
+
+def update_cart_item_quantity(request):
+    """AJAX handler to update the quantity of a cart item."""
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+        quantity = int(request.POST.get('quantity', 1))
+
+        # Get the CartItem object
+        cart_item = get_object_or_404(CartItem, id=item_id)
+
+        # Check if enough stock is available
+        if cart_item.product_variant.stock < quantity:
+            return JsonResponse({
+                'success': False,
+                'error': 'Not enough stock available.',
+            }, status=400)
+
+        # Update the quantity
+        cart_item.quantity = quantity
+        cart_item.save()
+
+        # Calculate total price for the item and the cart
+        item_total = cart_item.quantity * (cart_item.product_variant.product.price + cart_item.product_variant.additional_price)
+        cart_total = sum(
+            item.quantity * (item.product_variant.product.price + item.product_variant.additional_price)
+            for item in cart_item.cart.items.all()
+        )
+
+        return JsonResponse({
+            'success': True,
+            'item_total': item_total,
+            'cart_total': cart_total,
+        })
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
+
+
+def remove_cart_item(request):
+    """AJAX handler to remove an item from the cart."""
+    if request.method == 'POST':
+        item_id = request.POST.get('item_id')
+
+        # Get the CartItem object
+        cart_item = get_object_or_404(CartItem, id=item_id)
+
+        # Remove the item
+        cart = cart_item.cart
+        cart_item.delete()
+
+        # Recalculate the total price of the cart
+        cart_total = sum(
+            item.quantity * (item.product_variant.product.price + item.product_variant.additional_price)
+            for item in cart.items.all()
+        )
+
+        return JsonResponse({
+            'success': True,
+            'cart_total': cart_total,
+        })
+
+    return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
+
+def add_or_edit_address(request):
+    if request.method == 'POST':
+        street_address = request.POST['street_address']
+        apartment_number = request.POST.get('apartment_number', '')
+        city = request.POST['city']
+        state = request.POST['state']
+        country = request.POST['country']
+        pincode = request.POST['pincode']
+        is_default = 'is_default' in request.POST  # Checking if the address is marked as default
+
+        # Create an Address instance for the user
+        new_address = Address(
+            user=request.user,
+            street_address=street_address,
+            apartment_number=apartment_number,
+            city=city,
+            state=state,
+            country=country,
+            pincode=pincode,
+            is_default=is_default
+        )
+        new_address.save()
+        messages.success(request, 'Address added successfully.')
+        return JsonResponse({'message': 'Address added successfully.'})
+    return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
 def wish_list(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)
     total_price = sum(item.product.price for item in wishlist_items)
     return render(request, 'product/wish_list.html', {'wishlist_items': wishlist_items, 'total_price': total_price})
+
+
+def profile(request):
+    wishlist_items = Wishlist.objects.filter(user=request.user)
+    total_price = sum(item.product.price for item in wishlist_items)
+    return render(request, 'product/profile.html', {'wishlist_items': wishlist_items, 'total_price': total_price})

@@ -43,13 +43,16 @@
                             <div class="dropdown">
                                 <button class="profile-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="profile-container">
-                                        <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp"
+                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
                                             alt="Avatar"
                                             class="profile-image"/>
                                         <span class="profile-username">{{ user.username }}</span>
                                     </div>
                                 </button>
                                 <ul class="dropdown-menu dropdown-menu-start w-75">
+                                    <li>
+                                        <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
+                                    </li>
                                     <li>
                                         <a class="dropdown-item" href="#">Orders</a>
                                     </li>
@@ -105,7 +108,7 @@
                                     <span class="text-info">Wishlist Total: $500</span>
                                     <!-- Example: Wishlist total value -->
                                     <div class="card-actions">
-                                        <a href="{% url 'wish_list' %}" class="btn btn-primary btn-block">View
+                                        <a href="{% url 'profile' %}" class="btn btn-primary btn-block">View
                                             Wishlist</a>
                                     </div>
                                 </div>
