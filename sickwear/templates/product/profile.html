@@ -432,55 +432,56 @@
         </div>
     </div>
 
-    {% block js_loader %}
-    <script>
-        function updateContent(section, element) {
-            const contentArea = document.getElementById('dynamic-content');
-            const sections = {
-                address: document.getElementById('address-form'),
-                dashboard: document.getElementById('user-dashboard'),
-                orders: document.getElementById('user-orders'),
-                wishlist: document.getElementById('wishlist'),
-            };
-            const listItems = document.querySelectorAll('.list-group-item');
-    
-            // Remove active class from all items and add it to the clicked item
-            listItems.forEach(item => item.classList.remove('active-item'));
-            element.classList.add('active-item');
-    
-            // Show/Hide sections
-            Object.keys(sections).forEach(key => {
+{% block js_loader %}
+<script>
+    function updateContent(section, element) {
+        // Define sections and hide all
+        const sections = {
+            address: document.getElementById('address-form'),
+            dashboard: document.getElementById('user-dashboard'),
+            orders: document.getElementById('user-orders'),
+            wishlist: document.getElementById('wishlist'),
+        };
+
+        Object.keys(sections).forEach(key => {
+            if (sections[key]) {
                 sections[key].style.display = key === section ? 'block' : 'none';
-            });
-    
-            // Update content based on the clicked section
-            const sectionContents = {
-                notifications: `
-                    <h5>Notifications</h5>
-                    <p>Check your notifications and alerts here.</p>
-                `,
-                profile: `
-                    <h5>Your Profile</h5>
-                    <p>Manage your profile information here.</p>
-                `,
-                logout: `
-                    <h5>Logout</h5>
-                    <p>You have been logged out successfully.</p>
-                `,
-                default: `
-                    <h5>Welcome to your dashboard!</h5>
-                    <p>Select an option from the left to view more details.</p>
-                `,
-            };
-    
-            // Clear content area if the section is a dynamic section
-            if (!sections[section]) {
-                contentArea.innerHTML = sectionContents[section] || sectionContents.default;
-            } else {
-                contentArea.innerHTML = ''; // Clear for predefined sections
             }
+        });
+
+        // Update content area (if applicable)
+        const contentArea = document.getElementById('dynamic-content');
+        if (!sections[section] && contentArea) {
+            const sectionContents = {
+                notifications: `<h5>Notifications</h5><p>Check your notifications and alerts here.</p>`,
+                profile: `<h5>Your Profile</h5><p>Manage your profile information here.</p>`,
+                logout: `<h5>Logout</h5><p>You have been logged out successfully.</p>`,
+                default: `<h5>Welcome to your dashboard!</h5><p>Select an option from the left to view more details.</p>`,
+            };
+            contentArea.innerHTML = sectionContents[section] || sectionContents.default;
+        } else if (contentArea) {
+            contentArea.innerHTML = '';
         }
-    </script>
-    
-    {% endblock %}
+
+        // Highlight active item
+        const listItems = document.querySelectorAll('.list-group-item');
+        listItems.forEach(item => item.classList.remove('active-item'));
+        if (element) {
+            element.classList.add('active-item');
+        }
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const section = urlParams.get('section') || 'dashboard';
+
+        // Call updateContent to set the initial state
+        const initialItem = document.querySelector(`[onclick="updateContent('${section}', this)"]`);
+        if (initialItem) {
+            updateContent(section, initialItem);
+        } else {
+            updateContent(section, null);
+        }
+    });
+</script>
+{% endblock %}
 {% endblock %}
