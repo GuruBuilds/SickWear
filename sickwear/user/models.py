@@ -8,6 +8,29 @@ class User(AbstractUser):
     is_customer = models.BooleanField(default=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
 
+    def __str__(self):
+        return self.username
+
+    def items_count(self):
+        cart = self.cart.first()
+        if cart:
+            return cart.items.count()
+        return 0
+
+    def cart_subtotal(self):
+        cart = self.cart.first()  # Get the first cart for the user
+        if cart:
+            subtotal = sum(
+                (item.product_variant.product.price + item.product_variant.additional_price) * item.quantity 
+                for item in cart.items.all())
+            return subtotal
+        return 0.0  # Return 0 if no cart exists
+
+    def wishlist_subtotal(self):
+        wishlist_items = self.wishlist.all()  # Get all wishlist items for the user
+        subtotal = sum(item.product.price for item in wishlist_items)
+        return subtotal
+
 
 class Address(models.Model):
     """Model to store user addresses."""
@@ -61,6 +84,24 @@ class ProductVariant(models.Model):
 
     def __str__(self):
         return str(f"{self.product.name} - {self.size}/{self.color}")
+
+
+class ProductImage(models.Model):
+    product = models.ForeignKey(Product, related_name='product_images', on_delete=models.CASCADE, blank=True, null=True)
+    variant = models.ForeignKey(ProductVariant, related_name='variant_images', on_delete=models.CASCADE, blank=True, null=True)
+    image = models.ImageField(upload_to='product_images/')  # Image for the product or variant
+    is_main = models.BooleanField(default=False)  # To mark the main image
+
+    def __str__(self):
+        if self.product:
+            return f"Image for {self.product.name}"
+        if self.variant:
+            return f"Image for {self.variant.product.name} - {self.variant.size}/{self.variant.color}"
+        return "Unnamed image"
+
+    class Meta:
+        # You can choose to add ordering logic to ensure the main image is always the first one for the product/variant
+        ordering = ['-is_main']
 
 
 class Cart(models.Model):
