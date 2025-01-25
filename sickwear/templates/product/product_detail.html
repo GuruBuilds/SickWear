@@ -6,7 +6,22 @@
         <!-- Product Image Section -->
         <div class="col-md-6">
             <div class="card">
-                <img src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}">
+                <!-- Main Product Image -->
+                <div class="position-relative">
+                    <img id="mainImage" src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}">
+                </div>
+            </div>
+
+            <!-- Thumbnails of Additional Images -->
+            <div class="row mt-3">
+                {% for image in product_images %}
+                <div class="col-3 mb-3">
+                    <img src="{{ image.image.url }}" 
+                         class="img-fluid thumbnail {% if forloop.first %}selected-thumbnail{% endif %}" 
+                         alt="Product Thumbnail" 
+                         onclick="changeMainImage('{{ image.image.url }}', this)">
+                </div>
+                {% endfor %}
             </div>
         </div>
 
@@ -16,7 +31,7 @@
             <h3 class="text-success mb-4">${{ product.price }}</h3>
             <p class="lead">{{ product.description }}</p>
             <div class="mt-4">
-             <!-- Variants Section with Radio Buttons -->
+                <!-- Variants Section with Radio Buttons -->
                 <h5 class="mt-4">Choose a Variant</h5>
                 <form method="POST" action="{% url 'add_to_cart' %}">
                     {% csrf_token %}
@@ -93,4 +108,22 @@
         {% endfor %}
     </div>
 </div>
+
+{% block js_loader %}
+<script>
+    // JavaScript to change the main image when a thumbnail is clicked
+    function changeMainImage(imageUrl, thumbnail) {
+        // Change the main image
+        document.getElementById('mainImage').src = imageUrl;
+
+        // Remove 'selected-thumbnail' class from all thumbnails
+        let thumbnails = document.querySelectorAll('.thumbnail');
+        thumbnails.forEach(thumb => thumb.classList.remove('selected-thumbnail'));
+
+        // Add 'selected-thumbnail' class to the clicked thumbnail
+        thumbnail.classList.add('selected-thumbnail');
+    }
+</script>
+{% endblock %}
+
 {% endblock %}

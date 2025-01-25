@@ -96,17 +96,15 @@
                                 aria-expanded="false">
                                 <div class="indicator">
                                     <i class="bi bi-heart"></i>
-                                    <span class="badge badge-sm indicator-item">5</span>
-                                    <!-- Example number of items in wishlist -->
+                                    <span class="badge badge-sm indicator-item">{{ user.wishlist.count }}</span>
                                 </div>
                             </button>
 
                             <!-- Dropdown Menu for Wishlist Summary -->
                             <div class="dropdown-menu dropdown-menu-start py-3 w-75 shadow-lg bg-base-100">
                                 <div class="card-body">
-                                    <span class="text-lg font-bold">5 Items</span> <!-- Example: Number of items -->
-                                    <span class="text-info">Wishlist Total: $500</span>
-                                    <!-- Example: Wishlist total value -->
+                                    <span class="text-lg font-bold">{{ user.wishlist.count }} Items</span>
+                                    <span class="text-info">Wishlist Total: ${{ user.wishlist_subtotal }}</span>
                                     <div class="card-actions">
                                         <a href="{% url 'profile' %}?section=wishlist" class="btn btn-primary btn-block">View
                                             Wishlist</a>
@@ -125,19 +123,19 @@
 
                                 <div class="indicator">
                                     <i class="bi bi-cart3"></i>
-                                    <span class="badge badge-sm indicator-item">8</span>
-                                    <!-- Example number of items in cart -->
+                                    <span class="badge badge-sm indicator-item">{{ user.items_count }}</span>
                                 </div>
                             </button>
 
                             <!-- Dropdown Menu for Cart Summary -->
                             <div class="dropdown-menu dropdown-menu-end py-3 w-75 shadow-lg bg-base-100">
                                 <div class="card-body">
-                                    <span class="text-lg font-bold">8 Items</span> <!-- Example: Number of items -->
-                                    <span class="text-info">Subtotal: $999</span> <!-- Example: Subtotal -->
+                                    <span class="text-lg font-bold">{{ user.items_count }} Items</span>
+                                    <span class="text-info">Subtotal: ${{ user.cart_subtotal }}</span>
                                     <div class="card-actions">
-                                        <a href="{% url 'view_cart' %}" class="btn btn-primary btn-block">View
-                                            Cart</a>
+                                        <a href="{% url 'view_cart' %}" class="btn btn-primary btn-block">
+                                            View Cart
+                                        </a>
                                     </div>
                                 </div>
                             </div>

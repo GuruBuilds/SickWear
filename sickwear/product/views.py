@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404
-from user.models import Category, Product, ProductVariant, Cart, CartItem, Wishlist, Address
+from user.models import Category, Product, ProductVariant, ProductImage, Cart, CartItem, Wishlist, Address
 from django.contrib import messages
 
 # Create your views here.
@@ -12,13 +12,19 @@ def category(request, slug):
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
     product_varients = ProductVariant.objects.filter(product=product)
+
+    # Get all images for the product
+    product_images = ProductImage.objects.filter(product=product)
+    # Get suggested products (excluding the current product)
     suggested_products = Product.objects.exclude(slug=slug)[:4]
+    
+    # Pass all the necessary context to the template
     return render(request, 'product/product_detail.html', {
         'product': product,
         'product_varients': product_varients,
-        'suggested_products': suggested_products
+        'product_images': product_images,
+        'suggested_products': suggested_products,
     })
-
 
 def add_to_cart(request):
     if request.method == 'POST':
@@ -66,7 +72,7 @@ def view_cart(request):
         item.total_price += item.product_variant.additional_price * item.quantity
 
     # Calculate the total cost of the cart
-    cart_total = sum(item.product_variant.product.price * item.quantity for item in cart_items)
+    cart_total = sum((item.product_variant.product.price + item.product_variant.additional_price) * item.quantity for item in cart_items)
 
     # send user addrss to the template
     user_address = Address.objects.filter(user=request.user).first()
@@ -111,7 +117,6 @@ def update_cart_item_quantity(request):
         })
 
     return JsonResponse({'success': False, 'error': 'Invalid request method.'}, status=405)
-
 
 def remove_cart_item(request):
     """AJAX handler to remove an item from the cart."""
@@ -164,12 +169,10 @@ def add_or_edit_address(request):
         return JsonResponse({'message': 'Address added successfully.'})
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
-
 def wish_list(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)
     total_price = sum(item.product.price for item in wishlist_items)
     return render(request, 'product/wish_list.html', {'wishlist_items': wishlist_items, 'total_price': total_price})
-
 
 def profile(request):
     wishlist_items = Wishlist.objects.filter(user=request.user)
