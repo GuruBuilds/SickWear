@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import get_user_model
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from user.models import Address
+from user.models import Category, Product, ProductVariant, ProductImage, Cart, CartItem, Wishlist, Address
 
 User = get_user_model()
 # Create your views here.
@@ -91,3 +91,6 @@ def signout(request):
     logout(request)
     messages.success(request, 'You have successfully logged out.')
     return redirect('/')
+
+def staff_member_page(request):
+    return render(request, 'personal_panel/staff_member_page.html')
