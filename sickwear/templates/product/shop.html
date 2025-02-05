@@ -1,0 +1,83 @@
+{% extends "../base.html" %}
+{% load static %}
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+
+<!--=============== MAIN ===============-->
+<main class="main">
+    <!--=============== BREADCRUMB ===============-->
+    <section class="breadcrumb">
+        <ul class="breadcrumb__list flex container">
+            <li><a href="index.html" class="breadcrumb__link">Home</a></li>
+            <li><span class="breadcrumb__link"></span>></li>
+            <li><span class="breadcrumb__link">{{ category.name }}</span></li>
+        </ul>
+    </section>
+
+    <!--=============== PRODUCTS ===============-->
+    <section class="products container section--lg">
+        <p class="total__products">We found <span>688</span> items for you!</p>
+        <div class="products__container grid">
+            {% for product in products %}
+            <div class="product__item">
+                <div class="product__banner">
+                    <a href="{% url 'product_detail' product.slug %}" class="product__images">
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product__img default" />
+                        <img src="{% static 'img/search.png' %}" alt="{{ product.name }}"
+                            class="product__img hover" />
+                    </a>
+                    <div class="product__actions">
+                        <a href="#" class="action__btn" aria-label="Quick View">
+                            <i class="fi fi-rs-eye"></i>
+                        </a>
+                        <a href="#" class="action__btn" aria-label="Add to Wishlist">
+                            <i class="fi fi-rs-heart"></i>
+                        </a>
+                        <a href="#" class="action__btn" aria-label="Compare">
+                            <i class="fi fi-rs-shuffle"></i>
+                        </a>
+                    </div>
+                    <div class="product__badge light-pink">Hot</div>
+                </div>
+                <div class="product__content">
+                    <span class="product__category">{{ category.name }}</span>
+                    <a href="details.html">
+                        <h3 class="product__title">{{ product.name }}</h3>
+                    </a>
+                    <div class="product__rating">
+                        <i class="fi fi-rs-star"></i>
+                        <i class="fi fi-rs-star"></i>
+                        <i class="fi fi-rs-star"></i>
+                        <i class="fi fi-rs-star"></i>
+                        <i class="fi fi-rs-star"></i>
+                    </div>
+                    <div class="product__price flex">
+                        <span class="new__price">${{ product.price }}</span>
+                        <span class="old__price">${{ product.price|add:100 }}</span>
+                    </div>
+                    <a href="#" class="action__btn cart__btn" aria-label="Add To Cart">
+                        <i class="fi fi-rs-shopping-bag-add"></i>
+                    </a>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12">
+                <p class="text-center">No products available in this category.</p>
+            </div>
+            {% endfor %}
+        </div>
+        <ul class="pagination">
+            <li><a href="#" class="pagination__link active">01</a></li>
+            <li><a href="#" class="pagination__link">02</a></li>
+            <li><a href="#" class="pagination__link">03</a></li>
+            <li><a href="#" class="pagination__link">...</a></li>
+            <li><a href="#" class="pagination__link">16</a></li>
+            <li><a href="#" class="pagination__link icon">
+                    <i class="fi-rs-angle-double-small-right"></i>
+                </a></li>
+        </ul>
+    </section>
+</main>
+
+{% endblock %}

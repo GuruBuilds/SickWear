@@ -109,21 +109,4 @@
     </div>
 </div>
 
-{% block js_loader %}
-<script>
-    // JavaScript to change the main image when a thumbnail is clicked
-    function changeMainImage(imageUrl, thumbnail) {
-        // Change the main image
-        document.getElementById('mainImage').src = imageUrl;
-
-        // Remove 'selected-thumbnail' class from all thumbnails
-        let thumbnails = document.querySelectorAll('.thumbnail');
-        thumbnails.forEach(thumb => thumb.classList.remove('selected-thumbnail'));
-
-        // Add 'selected-thumbnail' class to the clicked thumbnail
-        thumbnail.classList.add('selected-thumbnail');
-    }
-</script>
-{% endblock %}
-
 {% endblock %}

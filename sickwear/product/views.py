@@ -7,7 +7,7 @@ from django.contrib import messages
 def category(request, slug):
     category = Category.objects.get(slug=slug)
     products = category.products.all()
-    return render(request, 'product/category.html', {'products': products, 'category': category})
+    return render(request, 'product/shop.html', {'products': products, 'category': category})
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)

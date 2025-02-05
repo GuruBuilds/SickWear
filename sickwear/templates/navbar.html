@@ -1,148 +1,82 @@
-<!-- Navbar -->
-<nav class="navbar navbar-expand-md bg-body-tertiary">
-    <div class="container-xl">
-        <a class="navbar-brand fs-1" href="{% url 'index' %}">Sickwear</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="search-and-icons mx-2">
-                <form class="d-flex mb-2 me-2" role="search">
-                    <input class="form-control me-2" type="search" aria-label="Search">
-                </form>
-                <div class="user-icons d-flex mb-2">
-                    <!-- Profile Icon Section -->
-                    <div class="user-icons d-flex mb-2">
-                        <div class="profile px-0">
-                            {% if user.is_authenticated %}
-                            <!-- If user is authenticated, show username and dropdown -->
-                            <div class="dropdown">
-                                <button class="profile-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="profile-container">
-                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                                            alt="Avatar"
-                                            class="profile-image"/>
-                                        <span class="profile-username">{{ user.username }}</span>
-                                    </div>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-start w-75">
-                                    <li>
-                                        <a class="dropdown-item" href="{% url 'profile' %}">My Profile</a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">Orders</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="{% url 'signout' %}">Logout</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            {% else %}
-                            <!-- If user is not authenticated, show login/signup button -->
-                            <div class="dropdown">
-                                <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <i class="bi bi-person"></i> <!-- Profile Icon -->
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-start">
-                                    <li>
-                                        <a class="dropdown-item" href="#">Orders</a>
-                                    </li>
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item btn btn-outline-secondary"
-                                            href="{% url 'signin' %}">Sign UP / Login</a>
-                                    </li>
-                                </ul>
-                            </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
-                    <!-- Wishlist Icon with Dropdown Summary -->
-                    <div class="wishlist px-0">
-                        <div class="dropdown">
-                            <!-- Wishlist Icon with Indicator -->
-                            <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-                                <div class="indicator">
-                                    <i class="bi bi-heart"></i>
-                                    <span class="badge badge-sm indicator-item">{{ user.wishlist.count }}</span>
-                                </div>
-                            </button>
-
-                            <!-- Dropdown Menu for Wishlist Summary -->
-                            <div class="dropdown-menu dropdown-menu-start py-3 w-75 shadow-lg bg-base-100">
-                                <div class="card-body">
-                                    <span class="text-lg font-bold">{{ user.wishlist.count }} Items</span>
-                                    <span class="text-info">Wishlist Total: ${{ user.wishlist_subtotal }}</span>
-                                    <div class="card-actions">
-                                        <a href="{% url 'profile' %}?section=wishlist" class="btn btn-primary btn-block">View
-                                            Wishlist</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Cart Icon with Dropdown Summary -->
-                    <div class="cart px-0">
-                        <div class="dropdown">
-                            <!-- Cart Icon with Indicator -->
-                            <button class="btn btn-ghost btn-circle" data-bs-toggle="dropdown"
-                                aria-expanded="false">
-
-                                <div class="indicator">
-                                    <i class="bi bi-cart3"></i>
-                                    <span class="badge badge-sm indicator-item">{{ user.items_count }}</span>
-                                </div>
-                            </button>
-
-                            <!-- Dropdown Menu for Cart Summary -->
-                            <div class="dropdown-menu dropdown-menu-end py-3 w-75 shadow-lg bg-base-100">
-                                <div class="card-body">
-                                    <span class="text-lg font-bold">{{ user.items_count }} Items</span>
-                                    <span class="text-info">Subtotal: ${{ user.cart_subtotal }}</span>
-                                    <div class="card-actions">
-                                        <a href="{% url 'view_cart' %}" class="btn btn-primary btn-block">
-                                            View Cart
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+{% load static %}
+<header class="header">
+  <div class="header__top">
+    <div class="header__container container">
+      <div class="header__contact">
+        <span>(+01) - 2345 - 6789</span>
+        <span>Our location</span>
+      </div>
+      <p class="header__alert-news">
+        Super Values Deals - Save more coupons
+      </p>
+      <a href="login-register.html" class="header__top-action">
+        Log In / Sign Up
+      </a>
     </div>
-</nav>
+  </div>
+
+  <nav class="nav container">
+    <a href="{% url 'index' %}" class="nav__logo">
+      <img
+        class="nav__logo-img"
+        src="{% static 'img/logo.svg' %}"
+        alt="website logo"
+      />
+    </a>
+    <div class="nav__menu" id="nav-menu">
+      <div class="nav__menu-top">
+        <a href="index.html" class="nav__menu-logo">
+          <img src="{% static 'img/logo.svg' %}" alt="">
+        </a>
+        <div class="nav__close" id="nav-close">
+          <i class="fi fi-rs-cross-small"></i>
+        </div>
+      </div>
+      <ul class="nav__list">
+        <li class="nav__item">
+          <a href="{% url 'index' %}" class="nav__link active-link">Home</a>
+        </li>
+        <li class="nav__item">
+          <a href="shop.html" class="nav__link">Shop</a>
+        </li>
+        <li class="nav__item">
+          <a href="accounts.html" class="nav__link">My Account</a>
+        </li>
+        <!-- <li class="nav__item">
+          <a href="compare.html" class="nav__link">Compare</a>
+        </li> -->
+        <li class="nav__item">
+          {% if user.is_authenticated %}
+          <!-- If user is authenticated, show username and dropdown -->
+          <a href="{% url 'signout' %}" class="nav__link">Logout</a>
+          {% else %}
+          <a href="{% url 'signin' %}" class="nav__link">Sign UP / Login</a>
+          {% endif %}
+        </li>
+      </ul>
+      <div class="header__search">
+        <input
+          type="text"
+          placeholder="Search For Items..."
+          class="form__input"
+        />
+        <button class="search__btn">
+          <img src="{% static 'img/search.png' %}" alt="search icon" />
+        </button>
+      </div>
+    </div>
+    <div class="header__user-actions">
+      <a href="{% url 'profile' %}" class="header__action-btn" title="Wishlist">
+        <img src="{% static 'img/icon-heart.svg' %}" alt="" />
+        <span class="count">{{ user.wishlist.count }}</span>
+      </a>
+      <a href="{% url 'view_cart' %}" class="header__action-btn" title="Cart">
+        <img src="{% static 'img/icon-cart.svg' %}" alt="" />
+        <span class="count">{{ user.items_count }}</span>
+      </a>
+      <div class="header__action-btn nav__toggle" id="nav-toggle">
+        <img src="{% static 'img/menu-burger.svg' %}" alt="">
+      </div>
+    </div>
+  </nav>
+</header>
