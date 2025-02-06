@@ -22,4 +22,21 @@ urlpatterns = [
     path('', views.signin, name='signin'),
     path('signup/', views.signup, name='signup'),
     path('signout/', views.signout, name='signout'),
+    path('staff-member-page', views.staff_member_page, name='staffMmberPage'),
+
+    path('staff/dashboard/', views.StaffDashboardView.as_view(), name='staff-dashboard'),
+    
+    # Users
+    path('staff/users/', views.UserListView.as_view(), name='staff-users'),
+    
+    # Products
+    path('staff/products/', views.ProductListView.as_view(), name='staff-products'),
+    path('staff/products/add/', views.ProductCreateView.as_view(), name='staff-product-add'),
+    path('staff/products/<int:pk>/', views.ProductUpdateView.as_view(), name='staff-product-edit'),
+    
+    # Orders
+    path('staff/orders/', views.OrderListView.as_view(), name='staff-orders'),
+    path('staff/orders/<int:pk>/', views.OrderUpdateView.as_view(), name='staff-order-edit'),
+    
+    # Add similar paths for other models
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

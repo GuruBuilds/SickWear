@@ -1,0 +1,36 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static '/css/staff_panel.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="staff-dashboard">
+    <aside class="sidebar">
+        <div class="brand">Staff Panel</div>
+        <nav>
+            <a href="{% url 'staff-dashboard' %}" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+            <a href="{% url 'staff-users' %}" class="nav-item"><i class="fas fa-users"></i> Users</a>
+            <a href="{% url 'staff-products' %}" class="nav-item"><i class="fas fa-box"></i> Products</a>
+            <a href="{% url 'staff-orders' %}" class="nav-item"><i class="fas fa-shopping-cart"></i> Orders</a>
+            <!-- Add more navigation items -->
+        </nav>
+    </aside>
+    
+    <main class="content">
+        <header class="content-header">
+            <h1>{% block page_title %}{% endblock %}</h1>
+            <div class="user-info">
+                Welcome, {{ request.user.username }}
+                <a href="{% url 'signout' %}" class="logout-btn">Logout</a>
+            </div>
+        </header>
+        
+        <div class="container-fluid">
+            {% block staff_content %}
+            {% endblock %}
+        </div>
+    </main>
+</div>
+{% endblock %}
