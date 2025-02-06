@@ -16,7 +16,9 @@ class Command(BaseCommand):
             username='admin',
             email=fake.email(),
             password='admin',  # Fixed password
-            phone_number="9876543211"
+            phone_number="9876543211",
+            is_subscribed_to_newsletter=True,  # Set newsletter subscription
+            is_customer=True,  # Set user as customer
         )
         self.stdout.write(self.style.SUCCESS(f"User {user.username} created."))
 
@@ -59,6 +61,8 @@ class Command(BaseCommand):
                 price=round(fake.pydecimal(left_digits=3, right_digits=2, positive=True), 2),
                 stock=randint(10, 100),
                 category=choice(categories),
+                is_active=randint(0, 1) == 1,  # Randomly set product active status
+                discount_price=round(fake.pydecimal(left_digits=3, right_digits=2, positive=True), 2) if randint(0, 1) else None,  # Random discount
             )
             # Fetch an image from Lorem Picsum and save it to the backend
             response = requests.get('https://picsum.photos/400/400', stream=True)
@@ -118,7 +122,9 @@ class Command(BaseCommand):
             order = Order.objects.create(
                 user=user,
                 total_price=round(fake.pydecimal(left_digits=4, right_digits=2, positive=True), 2),
-                status=choice([status[0] for status in Order.STATUS_CHOICES])
+                status=choice([status[0] for status in Order.STATUS_CHOICES]),
+                tracking_number=fake.uuid4(),  # Assign a random tracking number
+                shipping_address=choice(user.addresses.all()),  # Assign a shipping address
             )
             for _ in range(randint(1, 5)):  # 1-5 items per order
                 OrderItem.objects.create(
@@ -131,12 +137,17 @@ class Command(BaseCommand):
 
         # Generate Reviews for the user
         for _ in range(randint(1, 5)):  # 1-5 reviews for the user
-            Review.objects.create(
+            review = Review.objects.create(
                 product=choice(products),
                 user=user,
                 rating=randint(1, 5),
                 comment=fake.sentence()
             )
+            # Optionally add an image to the review
+            if randint(0, 1):
+                response = requests.get('https://picsum.photos/400/400', stream=True)
+                if response.status_code == 200:
+                    review.image.save(f"{fake.word()}.jpg", ContentFile(response.content))
         self.stdout.write(self.style.SUCCESS("Reviews created for user."))
 
         # Generate Wishlists for the user
