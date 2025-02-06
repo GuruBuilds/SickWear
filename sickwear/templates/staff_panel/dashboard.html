@@ -1,0 +1,43 @@
+{% extends "./staff_base.html" %}
+{% load humanize %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block staff_content %}
+<div class="dashboard-cards">
+    <div class="card">
+        <h3>Total Products</h3>
+        <div class="value">{{ total_products }}</div>
+    </div>
+    <div class="card">
+        <h3>Total Orders</h3>
+        <div class="value">{{ total_orders }}</div>
+    </div>
+</div>
+
+<div class="recent-orders">
+    <h2>Recent Orders</h2>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Customer</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in recent_orders %}
+            <tr>
+                <td>#{{ order.id }}</td>
+                <td>{{ order.user.username }}</td>
+                <td><span class="status-badge {{ order.status|lower }}">{{ order.status }}</span></td>
+                <td>${{ order.total_price|floatformat:2 }}</td>
+                <td>{{ order.created_at|date:"M d, Y" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -64,6 +64,15 @@ class Product(models.Model):
         """Returns the current price, factoring in discounts if available."""
         return self.discount_price if self.discount_price else self.price
 
+    @classmethod
+    def get_list_fields(cls):
+        return [
+            cls._meta.get_field('name'),
+            cls._meta.get_field('price'),
+            cls._meta.get_field('stock'),
+            cls._meta.get_field('category'),
+        ]
+
 
 class ProductVariant(models.Model):
     """Model to store product variants with different sizes and colors."""

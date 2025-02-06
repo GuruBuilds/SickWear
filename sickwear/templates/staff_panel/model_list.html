@@ -1,0 +1,48 @@
+{% extends "./staff_base.html" %}
+{% load humanize %}
+
+
+{% block staff_content %}
+<div class="model-list-header">
+    <h2>{{ object_list.model|title }} List</h2>
+    <a href="{% block add_url %}{% endblock %}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Add New
+    </a>
+</div>
+
+<table class="data-table">
+    <thead>
+        <tr>
+            {% block list_headers %}
+            {% for field in object_list.model.get_list_fields %}
+            <th>{{ field.verbose_name|title }}</th>
+            {% endfor %}
+            <th>Actions</th>
+            {% endblock %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in object_list %}
+        <tr>
+            {% block list_columns %}
+            {% for field in object_list.model.get_list_fields %}
+            <td>{{ object|getattr:field.name }}</td>
+            {% endfor %}
+            <td class="actions">
+                <a href="{% url 'staff-product-edit' object.pk %}" class="btn btn-sm btn-edit">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a href="#" class="btn btn-sm btn-delete">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </td>
+            {% endblock %}
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="100%">No items found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

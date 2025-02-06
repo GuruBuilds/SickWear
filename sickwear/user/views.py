@@ -4,6 +4,72 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from user.models import Category, Product, ProductVariant, ProductImage, Cart, CartItem, Wishlist, Address
 
+# views.py
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.utils.decorators import method_decorator
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from .models import *
+
+def staff_check(user):
+    return user.is_staff
+
+@method_decorator([login_required, user_passes_test(staff_check)], name='dispatch')
+class StaffDashboardView(ListView):
+    template_name = 'staff_panel/dashboard.html'
+    
+    def get_queryset(self):
+        return None
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.update({
+            'total_products': Product.objects.count(),
+            'total_orders': Order.objects.count(),
+            'recent_orders': Order.objects.order_by('-created_at')[:5],
+            'pending_orders': Order.objects.filter(status='PENDING')[:5]
+        })
+        return context
+
+# Generic Model Management Views
+class StaffModelMixin:
+    paginate_by = 10
+    template_name = 'staff_panel/model_list.html'
+    
+    @method_decorator([login_required, user_passes_test(staff_check)])
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
+class UserListView(StaffModelMixin, ListView):
+    model = User
+    ordering = ['-date_joined']
+
+class ProductListView(StaffModelMixin, ListView):
+    model = Product
+    ordering = ['-created_at']
+
+class ProductCreateView(StaffModelMixin, CreateView):
+    model = Product
+    fields = '__all__'
+    success_url = reverse_lazy('staff-products')
+
+class ProductUpdateView(StaffModelMixin, UpdateView):
+    model = Product
+    fields = '__all__'
+    success_url = reverse_lazy('staff-products')
+
+class OrderListView(StaffModelMixin, ListView):
+    model = Order
+    ordering = ['-created_at']
+
+class OrderUpdateView(StaffModelMixin, UpdateView):
+    model = Order
+    fields = ['status', 'tracking_number']
+    template_name = 'staff_panel/order_form.html'
+    success_url = reverse_lazy('staff-orders')
+
+# Add similar views for other models (Category, ProductVariant, etc.)
+
 User = get_user_model()
 # Create your views here.
 
