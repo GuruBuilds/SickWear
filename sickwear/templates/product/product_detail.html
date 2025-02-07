@@ -1,112 +1,166 @@
 {% extends "../base.html" %}
 {% block title %}{{ product.name }}{% endblock %}
 {% block content %}
-<div class="container mt-5">
-    <div class="row">
-        <!-- Product Image Section -->
-        <div class="col-md-6">
-            <div class="card">
-                <!-- Main Product Image -->
-                <div class="position-relative">
-                    <img id="mainImage" src="{{ product.image.url }}" class="card-img-top img-fluid" alt="{{ product.name }}">
-                </div>
-            </div>
-
-            <!-- Thumbnails of Additional Images -->
-            <div class="row mt-3">
-                {% for image in product_images %}
-                <div class="col-3 mb-3">
-                    <img src="{{ image.image.url }}" 
-                         class="img-fluid thumbnail {% if forloop.first %}selected-thumbnail{% endif %}" 
-                         alt="Product Thumbnail" 
-                         onclick="changeMainImage('{{ image.image.url }}', this)">
-                </div>
+<!--=============== DETAILS ===============-->
+<section class="details section--lg">
+    <div class="details__container container grid">
+        <div class="details__group">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="details__img" />
+            <div class="details__small-images grid">
+                {% for image in product.additional_images %}
+                    <img src="{{ image.url }}" alt="{{ product.name }}" class="details__small-img" />
                 {% endfor %}
             </div>
         </div>
+        <div class="details__group">
+            <h3 class="details__title">{{ product.name }}</h3>
+            <p class="details__brand">Brand: <span>{{ product.brand }}</span></p>
+            <div class="details__price flex">
+                <span class="new__price">${{ product.price }}</span>
+                {% if product.old_price %}
+                    <span class="old__price">${{ product.old_price }}</span>
+                    <span class="save__price">{{ product.discount_percentage }}% Off</span>
+                {% endif %}
+            </div>
+            <p class="short__description">{{ product.short_description }}</p>
+            <ul class="products__list">
+                <li class="list__item flex"><i class="fi-rs-crown"></i> 1 Year Al Jazeera Brand Warranty</li>
+                <li class="list__item flex"><i class="fi-rs-refresh"></i> 30 Days Return Policy</li>
+                <li class="list__item flex"><i class="fi-rs-credit-card"></i> Cash on Delivery available</li>
+            </ul>
+            <div class="details__color flex">
+                <span class="details__color-title">Color</span>
+                <ul class="color__list">
+                    {% for variant in product_varients %}
+                        <li>
+                            <a href="#" class="color__link" style="background-color: {{ variant.color }}"></a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="details__size flex">
+                <span class="details__size-title">Size</span>
+                <ul class="size__list">
+                    {% for variant in product_varients %}
+                        <li>
+                            <a href="#" class="size__link {% if variant.size == 'XL' %}size-active{% endif %}">{{ variant.size }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="details__action">
+                <input type="number" class="quantity" value="1" />
+                <a href="#" class="btn btn--sm">Add To Cart</a>
+                <a href="#" class="details__action-btn"><i class="fi fi-rs-heart"></i></a>
+            </div>
+            <ul class="details__meta">
+                <li class="meta__list flex"><span>SKU:</span>{{ product.sku }}</li>
+                <li class="meta__list flex"><span>Tags:</span>{{ product.tags|join:", " }}</li>
+                <li class="meta__list flex"><span>Availability:</span>{{ product.stock }} Items in Stock</li>
+            </ul>
+        </div>
+    </div>
+</section>
 
-        <!-- Product Details Section -->
-        <div class="col-md-6">
-            <h1 class="mb-3">{{ product.name }}</h1>
-            <h3 class="text-success mb-4">${{ product.price }}</h3>
-            <p class="lead">{{ product.description }}</p>
-            <div class="mt-4">
-                <!-- Variants Section with Radio Buttons -->
-                <h5 class="mt-4">Choose a Variant</h5>
-                <form method="POST" action="{% url 'add_to_cart' %}">
-                    {% csrf_token %}
-                    <div class="mt-3">
-                        {% for varient in product_varients %}
-                        <div class="form-check mb-2">
-                            <input 
-                                class="form-check-input" 
-                                type="radio" 
-                                name="selected_varient" 
-                                id="variant_{{ forloop.counter }}" 
-                                value="{{ varient.id }}" 
-                                {% if not varient.stock %}disabled{% endif %}
-                                {% if forloop.first and varient.stock %}checked{% endif %}
-                            >
-                            <label class="form-check-label" for="variant_{{ forloop.counter }}">
-                                <span class="fw-bold">{{ varient.color }}</span> - 
-                                <span class="text-muted">{{ varient.size }}</span>
-                                {% if varient.stock %}
-                                    <span class="text-success">(In Stock)</span>
-                                {% else %}
-                                    <span class="text-danger">(Out of Stock)</span>
-                                {% endif %}
-                            </label>
+<!--=============== DETAILS TAB ===============-->
+<section class="details__tab container">
+    <div class="detail__tabs">
+        <span class="detail__tab active-tab" data-target="#info">Additional Info</span>
+        <span class="detail__tab" data-target="#reviews">Reviews({{ product.reviews.count }})</span>
+    </div>
+    <div class="details__tabs-content">
+        <div class="details__tab-content active-tab" id="info">
+            <table class="info__table">
+                {% for spec in product.specifications %}
+                    <tr>
+                        <th>{{ spec.name }}</th>
+                        <td>{{ spec.value }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="details__tab-content" id="reviews">
+            {% comment %} <div class="reviews__container grid">
+                {% for review in product.reviews %}
+                    <div class="review__single">
+                        <div>
+                            <img src="{{ review.user.avatar.url }}" alt="{{ review.user.name }}" class="review__img" />
+                            <h4 class="review__title">{{ review.user.name }}</h4>
                         </div>
-                        {% endfor %}
+                        <div class="review__data">
+                            <div class="review__rating">
+                                {% for i in range(review.rating) %}
+                                    <i class="fi fi-rs-star"></i>
+                                {% endfor %}
+                            </div>
+                            <p class="review__description">{{ review.comment }}</p>
+                            <span class="review__date">{{ review.date }}</span>
+                        </div>
                     </div>
-
-                    <!-- Quantity Section with Input Field -->
-                    <div class="mt-4">
-                        <label for="quantity" class="form-label">Quantity</label>
-                        <input type="number" name="quantity" id="quantity" class="form-control" value="1" min="1" max="{{ product.stock }}" required>
+                {% endfor %}
+            </div> {% endcomment %}
+            <div class="review__form">
+                <h4 class="review__form-title">Add a review</h4>
+                <div class="rate__product">
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                    <i class="fi fi-rs-star"></i>
+                </div>
+                <form action="" class="form grid">
+                    <textarea class="form__input textarea" placeholder="Write Comment"></textarea>
+                    <div class="form__group grid">
+                        <input type="text" placeholder="Name" class="form__input">
+                        <input type="email" placeholder="Email" class="form__input">
                     </div>
-
-                    <!-- Add to Cart Button -->
-                    <div class="mt-4">
-                        <input type="hidden" name="product_id" value="{{ product.id }}">
-                        <input type="hidden" name="product_varient" value="{{ selected_varient.id }}">
-                        <input type="hidden" name="user_id" value="{{ request.user.id }}">
-                        
-                        <button class="btn btn-primary btn-lg">
-                            <i class="bi bi-cart-plus"></i> Add to Cart
-                        </button>
-                        <a href="{% url 'category' product.category.slug %}" class="btn btn-outline-secondary btn-lg ms-3">
-                            Back to Category
-                        </a>
-                        <a href="" class="btn btn-outline-secondary btn-lg ms-3">
-                            <i class="fas fa-heart"></i> Wishlist
-                        </a>
+                    <div class="form__btn">
+                        <button class="btn">Submit Review</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+</section>
 
-    <!-- Suggested Products Section -->
-    <div class="row mt-5">
-        <h2 class="mb-4">You May Also Like</h2>
-        {% for suggested_product in suggested_products %}
-            <div class="col-md-3">
-                <div class="card h-100">
-                    <img src="{{ suggested_product.image.url }}" class="card-img-top" alt="{{ suggested_product.name }}" style="height: 250px; object-fit: contain;">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ suggested_product.name }}</h5>
-                        <p class="card-text text-success">${{ suggested_product.price }}</p>
-                        <a href="{% url 'product_detail' suggested_product.slug %}" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-cart-plus"></i> Add to Cart
-                        </a>
+<!--=============== PRODUCTS ===============-->
+<section class="products container section--lg">
+    <h3 class="section__title"><span>Related</span> Products</h3>
+    <div class="products__container grid">
+        {% for related_product in suggested_products %}
+            <div class="product__item">
+                <div class="product__banner">
+                    <a href="{% url 'product_detail' related_product.slug %}" class="product__images">
+                        <img src="{{ related_product.image.url }}" alt="{{ related_product.name }}" class="product__img default" />
+                        <img src="{{ related_product.hover_image.url }}" alt="{{ related_product.name }}" class="product__img hover" />
+                    </a>
+                    <div class="product__actions">
+                        <a href="#" class="action__btn" aria-label="Quick View"><i class="fi fi-rs-eye"></i></a>
+                        <a href="#" class="action__btn" aria-label="Add to Wishlist"><i class="fi fi-rs-heart"></i></a>
+                        <a href="#" class="action__btn" aria-label="Compare"><i class="fi fi-rs-shuffle"></i></a>
                     </div>
+                    <div class="product__badge light-pink">Hot</div>
+                </div>
+                <div class="product__content">
+                    <span class="product__category">{{ related_product.category }}</span>
+                    <a href="{% url 'product_detail' related_product.slug %}">
+                        <h3 class="product__title">{{ related_product.name }}</h3>
+                    </a>
+                    {% comment %} <div class="product__rating">
+                        {% for i in range(related_product.rating) %}
+                            <i class="fi fi-rs-star"></i>
+                        {% endfor %}
+                    </div> {% endcomment %}
+                    <div class="product__price flex">
+                        <span class="new__price">${{ related_product.price }}</span>
+                        {% if related_product.old_price %}
+                            <span class="old__price">${{ related_product.old_price }}</span>
+                        {% endif %}
+                    </div>
+                    <a href="#" class="action__btn cart__btn" aria-label="Add To Cart"><i class="fi fi-rs-shopping-bag-add"></i></a>
                 </div>
             </div>
-        {% empty %}
-            <p>No suggested products available.</p>
         {% endfor %}
     </div>
-</div>
-
+</section>
 {% endblock %}

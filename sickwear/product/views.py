@@ -4,10 +4,25 @@ from user.models import Category, Product, ProductVariant, ProductImage, Cart, C
 from django.contrib import messages
 
 # Create your views here.
-def category(request, slug):
-    category = Category.objects.get(slug=slug)
-    products = category.products.all()
-    return render(request, 'product/shop.html', {'products': products, 'category': category})
+
+
+def category(request, slug=False):
+    if slug != False:
+        products = Product.objects.all()
+        context = {
+            'category': None,
+            'products': products
+        }
+    else:
+        category = Category.objects.get(slug=slug)
+        products = category.products.all()
+        context = {
+            'products': products,
+            'category': category
+        }
+        
+    return render(request, 'product/shop.html', context)
+    
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
@@ -64,17 +79,17 @@ def add_to_cart(request):
             return JsonResponse({'error': str(e)}, status=500)
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+
 def view_cart(request):
     cart_items = CartItem.objects.filter(cart__user=request.user)
-    # add the total price for each item in the cart
+
     for item in cart_items:
-        item.total_price = item.product_variant.product.price * item.quantity
-        item.total_price += item.product_variant.additional_price * item.quantity
+        item.total_price = (item.product_variant.product.price + item.product_variant.additional_price) * item.quantity
+        item.image = ProductImage.objects.filter(variant=item.product_variant, is_main=True).first().image
+        print(item.image)
 
-    # Calculate the total cost of the cart
-    cart_total = sum((item.product_variant.product.price + item.product_variant.additional_price) * item.quantity for item in cart_items)
+    cart_total = sum(item.total_price for item in cart_items)
 
-    # send user addrss to the template
     user_address = Address.objects.filter(user=request.user).first()
 
     return render(request, 'product/view_cart.html', {
