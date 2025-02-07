@@ -1,40 +1,58 @@
 {% extends "../base.html" %}
 {% block title %}Wishlist{% endblock %}
+{% load static %}
 {% block content %}
 
 <!-- Wishlist Page -->
-<main id="wishlist" style="max-width:960px; margin: 0 auto;">
-    <div class="back text-center mb-3"><a href="#">&#11178; shop</a></div>
-    <h1 class="text-center mb-4">Your Wishlist</h1>
-    <div class="container-fluid">
-        <div class="container my-5"> <!-- Centered container with margin -->
-            <div class="row align-items-start">
-                <div class="col-12 col-lg-10 mx-auto items"> <!-- Centering and allowing more space on large devices -->
-                    {% for item in wishlist_items %}
-                    <!-- Wishlist Item -->
-                    <div class="wishlistItem row align-items-start mb-3">
-                        <div class="col-12 col-sm-3 mb-2">
-                            <img class="w-100" src="{{ item.product.image.url }}" alt="{{ item.product.name }}">
-                        </div>
-                        <div class="col-12 col-sm-5 mb-2">
-                            <h6 class="">{{ item.product.name }}</h6>
-                            <p class="pl-1 mb-0">Price: ${{ item.product.price }}</p>
-                        </div>
-                        <div class="col-12 col-sm-4 mb-2 d-flex justify-content-between align-items-center">
-                            <p id="wishlistItem{{ item.id }}Price" class="mb-0">${{ item.product.price }}</p>
-                            <button class="btn btn-primary btn-sm" onclick="moveToCart({{ item.id }})">Move to Cart</button>
-                        </div>
-                    </div>
-                    <hr>
-                    {% empty %}
-                    <div class="col-12">
-                        <p class="text-center">Your wishlist is empty.</p>
-                    </div>
-                    {% endfor %}
-                </div>
+<section class="wishlist section--lg container">
+    <div class="table__container">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Stock Status</th>
+            <th>Action</th>
+            <th>Rename</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for item in wishlist_items %}
+          <tr>
+            <td>
+              <img
+                src="{{ item.product.image.url }}" 
+                alt="{{ item.product.name }}"
+                alt=""
+                class="table__img"
+              />
+            </td>
+            <td>
+              <h3 class="table__title">
+                {{ item.product.name }}
+              </h3>
+              <p class="table__description">
+                {{ item.product.description|slice:":80" }}
+              </p>
+            </td>
+            <td>
+              <span class="table__price">${{ item.product.price }}</span>
+            </td>
+            <td><span class="table__stock">In Stock</span></td>
+            <td><a href="#" class="btn btn--sm">Add to Cart</a></td>
+            <td><i class="fi fi-rs-trash table__trash"></i></td>
+          </tr>
+          {% empty %}
+            <div class="col-12">
+                <p class="text-center">Your wishlist is empty.</p>
             </div>
-        </div>
+        {% endfor %}
+
+         
+        </tbody>
+      </table>
     </div>
-</main>
+  </section>
 
 {% endblock %}
